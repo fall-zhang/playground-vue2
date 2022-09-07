@@ -865,56 +865,16 @@ export default {
   },
   methods: {
     // 根据厂站id打开指定图片
-    openImgByStid (stid) {
-      let _this = this
+    openImgByStid () {
     },
     showTypeFlagChange (val) {
       this.showTypeFlag = val
     },
     handleSeeInfo (value, type) {
       var that = this
-      const param = {
-        objId: value,
-        type
-      }
       this.overhaulPlanInfo = true
       this.titleInfo = { n: '年计划详情', zcq: '中长期计划详情', y: '月计划详情', z: '周计划详情' }[type]
       that.planInfoList = []
-      const zcqList = [
-        '计划编号',
-        '申请人',
-        '申请提交时间',
-        '申请单位',
-        '停电场所',
-        '上报类型',
-        '工作开始时间',
-        '工作结束时间',
-        '天数',
-        '停电范围',
-        '电压等级',
-        '设备管辖',
-        '工作内容',
-        '复役要求'
-      ]
-      const yList = [
-        '年度',
-        '月度',
-        '计划编号',
-        '申请人',
-        '申请提交时间',
-        '申请单位',
-        '停电场所',
-        '工作开始时间',
-        '工作结束时间',
-        '天数',
-        '停电范围',
-        '电压等级',
-        '设备管辖',
-        '工作内容',
-        '复役要求',
-        '备注',
-        '状态'
-      ]
     },
     // 弹框-表格
     // handleFuzzyQuery() {
