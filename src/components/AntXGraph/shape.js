@@ -1,6 +1,6 @@
 import { Graph, Shape } from '@antv/x6'
-import Dev from '@/components/topo/Dev'
-import Factory from '@/components/topo/Factory'
+import Dev from './shape/Dev.vue'
+import Factory from './shape/Factory.vue'
 
 // const { Rect, Circle, Cylinder, Ellipse, Image } = Shape
 const { Rect, Circle } = Shape

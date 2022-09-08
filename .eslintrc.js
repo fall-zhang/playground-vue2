@@ -22,12 +22,15 @@ module.exports = {
     ],
     'vue/singleline-html-element-content-newline': 'off',
     'vue/multiline-html-element-content-newline': 'off',
-    'vue/html-indent': ['error', 2],
+    'vue/html-indent': ['warn', 2],
     'vue/script-indent': ['error', 2],
     'vue/html-self-closing': 0,
     // 'vue/html-quotes': ['error', 'single'],
     'vue/multi-word-component-names': ['off'],
     // js
+    // 'prefer-template': 'error',
+    'no-fallthrough': 0,
+    'prefer-template': 0,
     quotes: ['error', 'single'], // 单引号，其他类型报错
     indent: ['error', 2], // 2 行缩进
     semi: ['error', 'never'], // 禁止使用分号
@@ -58,7 +61,6 @@ module.exports = {
     // 组件名称为多个单词，忽略的组件名称
     'comma-dangle': ['error', 'never'], // 最后一个属性不允许有逗号
     'arrow-spacing': 'error', // 箭头函数空格
-    'prefer-template': 'error',
     'template-curly-spacing': 'error',
     'quote-props': ['error', 'as-needed'], // 对象字面量属性名称使用引号
     'object-curly-spacing': ['error', 'always'], // 强制在花括号中使用一致的空格
@@ -73,7 +75,6 @@ module.exports = {
     // 路径别名设置
     'no-submodule-imports': ['off', '/@'],
     'no-implicit-dependencies': ['off', ['/@']]
-    // typescript
   },
   overrides: [
     {

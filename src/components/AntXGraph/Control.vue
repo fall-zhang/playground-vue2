@@ -274,26 +274,26 @@
 </template>
 
 <script>
-import { subAndLine } from "@/api/oms/topo/graph";
+// import { subAndLine } from '@/api/oms/topo/graph'
 
 export default {
-  name: "Control",
-  props: ["controlType", "selectCell", "graph", "nodeStatus", "verticesTable"],
+  name: 'Control',
+  props: ['controlType', 'selectCell', 'graph', 'nodeStatus', 'verticesTable'],
   data() {
     return {
       chooseVisible: false,
       chooseForm: {
-        chooseType: "0",
-        chooseDev: "",
+        chooseType: '0',
+        chooseDev: ''
       },
       typeOptions: [
-        { label: "厂站", value: "0" },
-        { label: "线路", value: "1" },
+        { label: '厂站', value: '0' },
+        { label: '线路', value: '1' }
       ],
       devOptions: [],
       showForm: {
-        id: "",
-        name: "",
+        id: '',
+        name: ''
       },
       subList: [],
       lineList: [],
@@ -301,357 +301,355 @@ export default {
       lineMap: {},
 
       graphForm: {
-        color: "rgba(255, 255, 255, 1)",
-        showGrid: true,
+        color: 'rgba(255, 255, 255, 1)',
+        showGrid: true
       },
       nodeForm: {
-        id: "",
-        name: "",
+        id: '',
+        name: '',
         x: 0,
         y: 0,
         width: 0,
         height: 0,
-        color: "#000",
-        stroke: "#000",
+        color: '#000',
+        stroke: '#000',
         strokeWidth: 2,
-        textColor: "#000",
+        textColor: '#000',
         fontSize: 14,
-        text: "",
-        angle: 0,
+        text: '',
+        angle: 0
       },
       edgeForm: {
-        id: "",
-        name: "",
+        id: '',
+        name: '',
         width: 0,
         strokeDasharray: 0,
-        color: "#000",
-        text: "",
-        textColor: "#000",
+        color: '#000',
+        text: '',
+        textColor: '#000',
         fontSize: 14,
         move: false,
         marker: false,
         verX: 0,
-        verY: 0,
-      },
-    };
+        verY: 0
+      }
+    }
   },
   mounted() {
-    this.initData();
+    this.initData()
   },
   watch: {
     selectCell: {
       handler(val) {
         if (val) {
           if (val.isNode()) {
-            this.nodeForm.id = val.id;
-            this.nodeForm.name = val.getData().name;
+            this.nodeForm.id = val.id
+            this.nodeForm.name = val.getData().name
 
-            this.nodeForm.x = this.nodeStatus.x;
-            this.nodeForm.y = this.nodeStatus.y;
-            this.nodeForm.width = this.nodeStatus.width;
-            this.nodeForm.height = this.nodeStatus.height;
-            if (val.store.data.shape !== "image") {
-              this.nodeForm.color = val.store.data.attrs.body.fill;
+            this.nodeForm.x = this.nodeStatus.x
+            this.nodeForm.y = this.nodeStatus.y
+            this.nodeForm.width = this.nodeStatus.width
+            this.nodeForm.height = this.nodeStatus.height
+            if (val.store.data.shape !== 'image') {
+              this.nodeForm.color = val.store.data.attrs.body.fill
               this.nodeForm.strokeWidth = val.store.data.attrs.body.strokeWidth
                 ? Number(val.store.data.attrs.body.strokeWidth)
-                : 2;
-              this.nodeForm.stroke = val.store.data.attrs.body.stroke;
+                : 2
+              this.nodeForm.stroke = val.store.data.attrs.body.stroke
             }
             this.nodeForm.text = val.store.data.attrs.label
               ? val.store.data.attrs.label.text
-              : "";
+              : ''
             this.nodeForm.textColor = val.store.data.attrs.label
               ? val.store.data.attrs.label.fill
-              : "#000";
+              : '#000'
             this.nodeForm.fontSize = val.store.data.attrs.text
               ? Number(val.store.data.attrs.text.fontSize)
-              : 14;
-            this.nodeForm.angle = val.getAngle();
+              : 14
+            this.nodeForm.angle = val.getAngle()
           } else {
-            this.edgeForm.id = val.id;
-            this.edgeForm.name = val.getData().name;
+            this.edgeForm.id = val.id
+            this.edgeForm.name = val.getData().name
 
-            this.edgeForm.width = Number(val.store.data.attrs.line.strokeWidth);
+            this.edgeForm.width = Number(val.store.data.attrs.line.strokeWidth)
             this.edgeForm.strokeDasharray = Number(
               val.store.data.attrs.line.strokeDasharray
-            );
-            this.edgeForm.color = val.store.data.attrs.line.stroke;
+            )
+            this.edgeForm.color = val.store.data.attrs.line.stroke
             this.edgeForm.text = val.store.data.labels
               ? val.store.data.labels[0].attrs.label.text
-              : "";
+              : ''
             this.edgeForm.textColor = val.store.data.labels
               ? val.store.data.labels[0].attrs.text.fill
-              : "#000";
+              : '#000'
             this.edgeForm.fontSize = val.store.data.labels
               ? Number(val.store.data.labels[0].attrs.text.fontSize)
-              : 14;
+              : 14
             this.edgeForm.move =
-              val.store.data.attrs.line.style.animation == "none"
-                ? false
-                : true;
+              val.store.data.attrs.line.style.animation == 'none' ? false : true
             this.edgeForm.marker =
               Number(val.store.data.attrs.line.targetMarker.size) === 1
                 ? false
-                : true;
+                : true
           }
         }
       },
       immediate: true,
-      deep: false,
+      deep: false
     },
     nodeStatus: {
       handler(val) {
-        this.nodeForm.x = val.x;
-        this.nodeForm.y = val.y;
-        this.nodeForm.width = val.width;
-        this.nodeForm.height = val.height;
+        this.nodeForm.x = val.x
+        this.nodeForm.y = val.y
+        this.nodeForm.width = val.width
+        this.nodeForm.height = val.height
       },
       immediate: true,
-      deep: true,
-    },
+      deep: true
+    }
   },
   methods: {
     initData() {
-      subAndLine().then((res) => {
-        this.lineList = res.line;
-        this.subList = res.station;
-        this.devOptions = res.station;
-        for (let i = 0; i < res.station.length; i++) {
-          this.subMap[res.station[i]["id"]] = res.station[i]["name"];
-        }
-        for (let i = 0; i < res.line.length; i++) {
-          this.lineMap[res.line[i]["id"]] = res.line[i]["name"];
-        }
-      });
+      // subAndLine().then((res) => {
+      //   this.lineList = res.line
+      //   this.subList = res.station
+      //   this.devOptions = res.station
+      //   for (let i = 0; i < res.station.length; i++) {
+      //     this.subMap[res.station[i]['id']] = res.station[i]['name']
+      //   }
+      //   for (let i = 0; i < res.line.length; i++) {
+      //     this.lineMap[res.line[i]['id']] = res.line[i]['name']
+      //   }
+      // })
     },
     devTypeChange() {
       // this.devOptions = []
-      if (this.chooseForm.chooseType == "0") {
-        this.devOptions = this.subList;
+      if (this.chooseForm.chooseType == '0') {
+        this.devOptions = this.subList
       } else {
-        this.devOptions = this.lineList;
+        this.devOptions = this.lineList
       }
-      this.chooseForm.chooseDev = "";
-      this.showForm.name = "";
-      this.showForm.id = "";
+      this.chooseForm.chooseDev = ''
+      this.showForm.name = ''
+      this.showForm.id = ''
     },
     devChange(val) {
-      if (this.chooseForm.chooseType === "0") {
-        this.showForm.name = this.subMap[val];
+      if (this.chooseForm.chooseType === '0') {
+        this.showForm.name = this.subMap[val]
       } else {
-        this.showForm.name = this.lineMap[val];
+        this.showForm.name = this.lineMap[val]
       }
-      this.showForm.id = val;
+      this.showForm.id = val
     },
     chooseOver() {
-      if (this.controlType === "node") {
-        this.nodeForm.name = this.showForm.name;
-        this.changeNodeName();
+      if (this.controlType === 'node') {
+        this.nodeForm.name = this.showForm.name
+        this.changeNodeName()
         // 需要后设置id，否则名字更新失败
         // 不能更新为相同的id，否则节点消失
         if (this.nodeForm.id != this.showForm.id) {
-          this.nodeForm.id = this.showForm.id;
-          this.graph.updateCellId(this.selectCell, this.showForm.id);
+          this.nodeForm.id = this.showForm.id
+          this.graph.updateCellId(this.selectCell, this.showForm.id)
         }
       } else {
-        this.edgeForm.name = this.showForm.name;
-        this.changeNodeName();
+        this.edgeForm.name = this.showForm.name
+        this.changeNodeName()
         if (this.edgeForm.id !== this.showForm.id) {
-          this.edgeForm.id = this.showForm.id;
-          this.graph.updateCellId(this.selectCell, this.showForm.id);
+          this.edgeForm.id = this.showForm.id
+          this.graph.updateCellId(this.selectCell, this.showForm.id)
         }
       }
 
-      this.chooseVisible = false;
+      this.chooseVisible = false
 
-      this.chooseForm.chooseType = "0";
-      this.chooseForm.chooseDev = "";
-      this.showForm.name = "";
-      this.showForm.id = "";
+      this.chooseForm.chooseType = '0'
+      this.chooseForm.chooseDev = ''
+      this.showForm.name = ''
+      this.showForm.id = ''
     },
     openChoose() {
-      this.chooseForm.chooseType = "0";
-      this.devOptions = this.subList;
-      this.chooseVisible = true;
+      this.chooseForm.chooseType = '0'
+      this.devOptions = this.subList
+      this.chooseVisible = true
     },
     changeBgColor(val) {
       this.graph.drawBackground({
-        color: val,
-      });
+        color: val
+      })
     },
     showGrid(val) {
-      val ? this.graph.showGrid() : this.graph.hideGrid();
+      val ? this.graph.showGrid() : this.graph.hideGrid()
     },
     changeNodeId() {
-      let id = "";
-      if (this.controlType === "node") {
-        id = this.nodeForm.id;
+      let id = ''
+      if (this.controlType === 'node') {
+        id = this.nodeForm.id
       } else {
-        id = this.edgeForm.id;
+        id = this.edgeForm.id
       }
-      this.graph.updateCellId(this.selectCell, id);
+      this.graph.updateCellId(this.selectCell, id)
     },
     changeNodeName() {
-      let newName = "";
-      if (this.controlType === "node") {
-        newName = this.nodeForm.name;
+      let newName = ''
+      if (this.controlType === 'node') {
+        newName = this.nodeForm.name
       } else {
-        newName = this.edgeForm.name;
+        newName = this.edgeForm.name
       }
       this.selectCell.updateData({
-        name: newName,
-      });
+        name: newName
+      })
     },
     changeNodeX(x) {
-      this.nodeForm.x = x;
-      this.selectCell.position(Number(x), Number(this.nodeForm.y));
+      this.nodeForm.x = x
+      this.selectCell.position(Number(x), Number(this.nodeForm.y))
     },
     changeNodeY(y) {
-      this.nodeForm.y = y;
-      this.selectCell.position(Number(this.nodeForm.x), Number(y));
+      this.nodeForm.y = y
+      this.selectCell.position(Number(this.nodeForm.x), Number(y))
     },
     changeNodeWidth(width) {
-      this.nodeForm.width = width;
-      this.selectCell.resize(Number(width), Number(this.nodeForm.height));
+      this.nodeForm.width = width
+      this.selectCell.resize(Number(width), Number(this.nodeForm.height))
     },
     changeNodeHeight(height) {
-      this.nodeForm.height = height;
-      this.selectCell.resize(Number(this.nodeForm.width), Number(height));
+      this.nodeForm.height = height
+      this.selectCell.resize(Number(this.nodeForm.width), Number(height))
     },
     changeEdgeWidth(width) {
-      this.edgeForm.width = width;
-      this.selectCell.attr("line/strokeWidth", Number(width));
+      this.edgeForm.width = width
+      this.selectCell.attr('line/strokeWidth', Number(width))
     },
     changeEdgeDasharray(val) {
-      this.edgeForm.strokeDasharray = val;
-      this.selectCell.attr("line/strokeDasharray", Number(val));
+      this.edgeForm.strokeDasharray = val
+      this.selectCell.attr('line/strokeDasharray', Number(val))
     },
     changeEdgeColor(val) {
-      this.edgeForm.color = val;
-      this.selectCell.attr("line/stroke", val);
+      this.edgeForm.color = val
+      this.selectCell.attr('line/stroke', val)
     },
     changeEdgeText(val) {
-      this.edgeForm.text = val;
+      this.edgeForm.text = val
       this.selectCell.setLabels({
-        attrs: { label: { text: val } },
-      });
+        attrs: { label: { text: val } }
+      })
       this.selectCell.setLabels({
         attrs: {
           label: {
-            text: val,
+            text: val
           },
           text: {
             fill: this.edgeForm.textColor,
-            fontSize: this.edgeForm.fontSize,
-          },
-        },
-      });
+            fontSize: this.edgeForm.fontSize
+          }
+        }
+      })
     },
     deleteEdgeText() {
-      this.selectCell.removeLabelAt(0);
-      this.edgeForm.text = "";
+      this.selectCell.removeLabelAt(0)
+      this.edgeForm.text = ''
     },
     changeEdgeTextColor(val) {
-      this.edgeForm.textColor = val;
+      this.edgeForm.textColor = val
       this.selectCell.setLabels({
         attrs: {
           label: {
-            text: this.edgeForm.text,
+            text: this.edgeForm.text
           },
           text: {
             fill: val,
-            fontSize: this.edgeForm.fontSize,
-          },
-        },
-      });
+            fontSize: this.edgeForm.fontSize
+          }
+        }
+      })
     },
     changeEdgeTextSize(val) {
-      this.edgeForm.fontSize = val;
+      this.edgeForm.fontSize = val
       this.selectCell.setLabels({
         attrs: {
           label: {
-            text: this.edgeForm.text,
+            text: this.edgeForm.text
           },
           text: {
             fill: this.edgeForm.textColor,
-            fontSize: val,
-          },
-        },
-      });
+            fontSize: val
+          }
+        }
+      })
     },
     changeEdgeMove(val) {
       if (val) {
         this.selectCell.attr(
-          "line/style/animation",
-          "ant-line 30s infinite linear"
-        );
+          'line/style/animation',
+          'ant-line 30s infinite linear'
+        )
       } else {
-        this.selectCell.attr("line/style/animation", "none");
+        this.selectCell.attr('line/style/animation', 'none')
       }
     },
     changeEdgeMarker(val) {
       if (val) {
-        this.selectCell.attr("line/targetMarker/size", 8);
+        this.selectCell.attr('line/targetMarker/size', 8)
       } else {
-        this.selectCell.attr("line/targetMarker/size", 1);
+        this.selectCell.attr('line/targetMarker/size', 1)
       }
     },
     changeNodeColor(val) {
-      this.nodeForm.color = val;
-      this.selectCell.attr("body/fill", val);
+      this.nodeForm.color = val
+      this.selectCell.attr('body/fill', val)
     },
     changeNodeStrokeWidth(val) {
-      this.nodeForm.strokeWidth = val;
-      this.selectCell.attr("body/strokeWidth", val);
+      this.nodeForm.strokeWidth = val
+      this.selectCell.attr('body/strokeWidth', val)
     },
     changeNodeStroke(val) {
-      this.nodeForm.stroke = val;
-      this.selectCell.attr("body/stroke", val);
+      this.nodeForm.stroke = val
+      this.selectCell.attr('body/stroke', val)
     },
     changeNodeText(val) {
-      this.nodeForm.text = val;
-      this.selectCell.attr("label/text", val);
+      this.nodeForm.text = val
+      this.selectCell.attr('label/text', val)
     },
     changeNodeTextColor(val) {
-      this.nodeForm.textColor = val;
-      this.selectCell.attr("label/fill", val);
+      this.nodeForm.textColor = val
+      this.selectCell.attr('label/fill', val)
     },
     changeNodeTextSize(val) {
-      this.nodeForm.fontSize = val;
-      this.selectCell.attr("text/fontSize", val);
+      this.nodeForm.fontSize = val
+      this.selectCell.attr('text/fontSize', val)
     },
     changeNodeAngle(val) {
-      this.nodeForm.angle = val;
-      this.selectCell.rotate(Number(val), { absolute: true });
+      this.nodeForm.angle = val
+      this.selectCell.rotate(Number(val), { absolute: true })
     },
     handleDelete(index) {
-      this.selectCell.removeVertexAt(index);
-      this.verticesTable.splice(index, 1);
+      this.selectCell.removeVertexAt(index)
+      // this.verticesTable.splice(index, 1)
     },
     addVertex() {
-      this.verticesTable.push({
-        x: this.edgeForm.verX,
-        y: this.edgeForm.verY,
-      });
+      // this.verticesTable.push({
+      //   x: this.edgeForm.verX,
+      //   y: this.edgeForm.verY
+      // })
       this.selectCell.appendVertex({
         x: this.edgeForm.verX,
-        y: this.edgeForm.verY,
-      });
+        y: this.edgeForm.verY
+      })
     },
     changeVertex(index, row) {
       this.selectCell.setVertexAt(index, {
         x: Number(row.x),
-        y: Number(row.y),
-      });
+        y: Number(row.y)
+      })
     },
     moveEdgeVertices(arr) {
-      this.verticesTable = arr;
+      // this.verticesTable = arr
     },
     nodeRotated(angle) {
-      this.nodeForm.angle = angle;
-    },
-  },
-};
+      this.nodeForm.angle = angle
+    }
+  }
+}
 </script>
 
 <style scoped>
