@@ -9,7 +9,7 @@ export function getSpecialCircle(label, config) {
     y: 500, // Number，必选，节点位置的 y 值
     label: label || '',
     zIndex: 2,
-    ...circle,
+    ...node,
     ...configObj
   })
 }
@@ -25,96 +25,102 @@ const portConifg = {
     args: {}
   }
 }
-let circle = {
-  shape: 'circle',
-  width: 80, // Number，可选，节点大小的 width 值
-  height: 80, // Number，可选，节点大小的 height 值
-  ports: {
-    groups: {
-      top: {
-        attrs: portConifg.attrs,
-        position: {
-          name: 'top',
-          args: {}
-        }
-      },
-      right: {
-        attrs: portConifg.attrs,
-        position: {
-          name: 'right',
-          args: {}
-        }
-      },
-      bottom: {
-        attrs: portConifg.attrs,
-        position: {
-          name: 'bottom',
-          args: {}
-        }
-      },
-      left: {
-        attrs: portConifg.attrs,
-        position: {
-          name: 'left',
-          args: {}
-        }
-      }
-    },
-    items: [
-      { id: 'top-1', group: 'top' },
-      { id: 'top-2', group: 'top' },
-      { id: 'top-3', group: 'top' },
-      { id: 'top-4', group: 'top' },
-      { id: 'right-1', group: 'right' },
-      { id: 'right-2', group: 'right' },
-      { id: 'right-3', group: 'right' },
-      { id: 'right-4', group: 'right' },
-      { id: 'bottom-1', group: 'bottom' },
-      { id: 'bottom-2', group: 'bottom' },
-      { id: 'bottom-3', group: 'bottom' },
-      { id: 'bottom-4', group: 'bottom' },
-      { id: 'left-1', group: 'left' },
-      { id: 'left-2', group: 'left' },
-      { id: 'left-3', group: 'left' },
-      { id: 'left-4', group: 'left' }
-    ]
-  }
-}
-const direction = [
-  'top',
-  'right-top',
-  'right',
-  'right-bottom',
-  'bottom',
-  'left-bottom',
-  'left',
-  'left-top'
-]
-let portItems = direction.map((item) => {
-  return [
-    { id: item + '-1', group: 'around' },
-    { id: item + '-2', group: 'around' },
-    {
-      id: item + '-3',
-      group: 'around',
-      attrs: {
-        circle: {
-          r: 2,
-          magnet: false,
-          stroke: 'transparent',
-          fill: 'transparent',
-          strokeWidth: 2
-        }
+// let circle = {
+//   shape: 'circle',
+//   width: 80, // Number，可选，节点大小的 width 值
+//   height: 80, // Number，可选，节点大小的 height 值
+//   ports: {
+//     groups: {
+//       top: {
+//         attrs: portConifg.attrs,
+//         position: {
+//           name: 'top',
+//           args: {}
+//         }
+//       },
+//       right: {
+//         attrs: portConifg.attrs,
+//         position: {
+//           name: 'right',
+//           args: {}
+//         }
+//       },
+//       bottom: {
+//         attrs: portConifg.attrs,
+//         position: {
+//           name: 'bottom',
+//           args: {}
+//         }
+//       },
+//       left: {
+//         attrs: portConifg.attrs,
+//         position: {
+//           name: 'left',
+//           args: {}
+//         }
+//       }
+//     },
+//     items: [
+//       { id: 'top-1', group: 'top' },
+//       { id: 'top-2', group: 'top' },
+//       { id: 'top-3', group: 'top' },
+//       { id: 'top-4', group: 'top' },
+//       { id: 'right-1', group: 'right' },
+//       { id: 'right-2', group: 'right' },
+//       { id: 'right-3', group: 'right' },
+//       { id: 'right-4', group: 'right' },
+//       { id: 'bottom-1', group: 'bottom' },
+//       { id: 'bottom-2', group: 'bottom' },
+//       { id: 'bottom-3', group: 'bottom' },
+//       { id: 'bottom-4', group: 'bottom' },
+//       { id: 'left-1', group: 'left' },
+//       { id: 'left-2', group: 'left' },
+//       { id: 'left-3', group: 'left' },
+//       { id: 'left-4', group: 'left' }
+//     ]
+//   }
+// }
+const direction = ['top', 'right', 'bottom', 'left']
+let portItems = []
+direction.forEach((item, index) => {
+  portItems.push({ id: item + '-1', group: 'around' })
+  portItems.push({
+    id: 'blank-' + 2 * index + 1,
+    group: 'around',
+    attrs: {
+      circle: {
+        r: 3,
+        magnet: false,
+        stroke: 'transparent',
+        fill: 'transparent',
+        strokeWidth: 0
       }
     }
-  ]
+  })
+  portItems.push({ id: item + '-2', group: 'around' })
+  portItems.push({ id: item + '-3', group: 'around' })
+  portItems.push({
+    id: 'blank-' + 2 * index,
+    group: 'around',
+    attrs: {
+      circle: {
+        r: 3,
+        magnet: false,
+        stroke: 'transparent',
+        fill: 'transparent',
+        strokeWidth: 0
+      }
+    }
+  })
+  portItems.push({ id: item + '-4', group: 'around' })
 })
-portItems = portItems.flat(1)
+console.log(portItems)
+
 const node = {
   width: 80, // Number，可选，节点大小的 width 值
   height: 80, // Number，可选，节点大小的 height 值
   label: '我我我我', // String，节点标签
-  angle: -8,
+  // angle: -8,
   ports: {
     groups: {
       around: {
@@ -133,14 +139,14 @@ const node = {
         // markup: [{ attrs: { tagName: 'circle', angle: -8 } }]
         attrs: portConifg.attrs,
         position: {
-          name: 'ellipseSpread'
+          name: 'ellipseSpread',
+          args: { start: -38 }
         }
       }
     },
     items: portItems
   }
 }
-console.log(node)
 // [
 //   { id: 'left-top-2', group: 'around' },
 //   { id: 'top-1', group: 'around' },
