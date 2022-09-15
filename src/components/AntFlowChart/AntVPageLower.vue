@@ -12,34 +12,40 @@
     <div class="tool-bar">
       <!-- 来大佬大佬大佬大佬 {{ JSON.stringify(baorr.gogo) }} -->
       <!-- <button type="primary" @click="onAddNode">添加单个图形</button> -->
-      <button @click="onTogglePort">
-        连接功能<input v-model="setting.showPort" type="checkbox" />
-      </button>
-      <!-- 当鼠标按下一个 port 时触发 -->
-      <button @click="onToggleDrag">
-        移动画布<input v-model="setting.dragGraph" type="checkbox" />
-      </button>
-      <button @click="onSmartConnect">
-        智能连接<input v-model="setting.smartConnect" type="checkbox" />
-      </button>
-      <button @click="onToggleGrid">
-        显示网格<input v-model="setting.showGrid" type="checkbox" />
-      </button>
+      <div style="margin-right: 10px;">
+        <el-button size="medium" type="primary">保存</el-button>
+        <el-button size="medium"  type="primary">导入</el-button>
+        <el-button size="medium" type="primary">撤销</el-button>
+        <el-button size="medium" type="primary">重做</el-button>
+      </div>
+      <div style="border-left:1px solid #aaa;padding-left: 10px;">
+        <el-checkbox v-model="setting.showPort" @change="onTogglePort"> 连接功能</el-checkbox>
+        <el-checkbox v-model="setting.dragGraph" @change="onToggleDrag">移动画布</el-checkbox>
+        <el-checkbox v-model="setting.smartConnect" @change="onSmartConnect">智能连接</el-checkbox>
+        <el-checkbox v-model="setting.showGrid" @change="onToggleGrid">显示网格</el-checkbox>
+        <el-checkbox v-model="setting.canZoom" @change="onToggleZoom">缩放功能</el-checkbox>
+      </div>
     </div>
     <div class="graph-container" :class="setting.showPort ? '' : 'hidePort'">
       <div ref="antVAdder" class="graph-adder"></div>
       <div ref="antVContainer" class="graph-editor"></div>
       <div ref="antVAdder2" class="graph-adder">
-        <button @click="onAddCellRelationship(selectCell.node)">
-          添加节点
-        </button>
-        <button @click="onConnectRelativeRect()">连接节点</button>
-        <div style="overflow: scroll; height: 80%">
-          选中节点：{{ JSON.stringify(selectCell.node) }}
-        </div>
         <div>
-          <button>保存</button>
-          <button>取消</button>
+          <button @click="onAddCellRelationship(selectCell.node)">
+            添加节点
+          </button>
+          <button @click="onConnectRelativeRect()">连接节点</button>
+        </div>
+        <div style="height: 80%">
+          <el-form ref="form"  label-width="60px">
+            <el-form-item label="ID">
+              <el-input size="small"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button size="small" type="primary" @click="onSaveCellInfo">保存</el-button>
+              <el-button size="small">取消</el-button>
+            </el-form-item>
+          </el-form>
         </div>
       </div>
     </div>
@@ -50,9 +56,9 @@ import { Graph, DataUri, Addon } from '@antv/x6'
 // import { getBasicRect } from './shape/basicGraph.js'
 import { getSpecialCircle } from './shape/specialGraph.js'
 // import moment from 'dayjs'
-import graphData from './graphData'
-// import { rect } from '@antv/x6/lib/registry/connection-point/rect'
-
+import graphData from './graphData.js'
+import './registerComponents.js'
+// 引入自定义组件文件
 export default {
   name: 'AntVGraph',
   props: {},
@@ -64,7 +70,9 @@ export default {
         showPort: true, // 显示连接
         dragGraph: true, // 移动画布
         showGrid: false, // 展示网格
-        smartConnect: false // 智能连接
+        smartConnect: false, // 智能连接
+        canZoom:true,
+        deleteEdgeConfirm: true
       },
       selectCell: {
         id: '',
@@ -78,6 +86,7 @@ export default {
   },
   mounted() {
     // 图形编辑区域
+    // this.initGraphComponents()
     this.initGraphZone()
     this.initGraphAdder()
     this.registerEvents()
@@ -145,14 +154,14 @@ export default {
         this.selectCell.mouseOverCell = node
         this.showPort(node, true)
       })
-      graph.on('node:mouseleave', ({ node }) => {
+      graph.on('node:mouseleave', () => {
         this.selectCell.mouseOverCell = null
       })
       graph.on('node:click', ({ node }) => {
         this.selectCell.node = node
       })
       graph.on('edge:mouseenter', ({ edge }) => {
-        console.log(edge.getSource())
+        // console.log(edge.getSource())
         edge.addTools([
           // { name: 'segments' },
           // { name: 'source-arrowhead' },
@@ -210,12 +219,13 @@ export default {
     onSmartConnect() {
       const { setting, graph } = this
       if (setting.smartConnect) {
-        this.setting.smartConnect = false
-        graph.disableMultipleSelection()
-      } else {
-        this.setting.smartConnect = true
         graph.enableMultipleSelection()
+      } else {
+        graph.disableMultipleSelection()
       }
+    },
+    onToggleZoom() {
+      console.log(this.graph.toJSON())
     },
     onDownload() {
       this.graph.toPNG(
@@ -234,35 +244,33 @@ export default {
       )
     },
     onTogglePort() {
-      if (this.setting.showPort) {
-        this.setting.showPort = false
-      } else {
-        this.setting.showPort = true
-      }
+      // if (this.setting.showPort) {
+      //   this.setting.showPort = false
+      // } else {
+      //   this.setting.showPort = true
+      // }
     },
     onToggleDrag() {
+      // console.log(this.setting.dragGraph)
+      // console.log(value)
       const { graph } = this
       if (this.setting.dragGraph) {
-        this.setting.dragGraph = false
-        graph.disablePanning()
-        graph.enableSelection()
-        graph.enableRubberband()
-      } else {
-        this.setting.dragGraph = true
         graph.enablePanning()
         graph.disableRubberband()
         graph.disableSelection()
+      } else {
+        graph.disablePanning()
+        graph.enableSelection()
+        graph.enableRubberband()
       }
     },
     onToggleGrid() {
       const { graph } = this
-      console.log(this.setting.showGrid)
+      // console.log(this.setting.showGrid)
       if (this.setting.showGrid) {
-        this.setting.showGrid = false
-        graph.hideGrid()
-      } else {
-        this.setting.showGrid = true
         graph.showGrid()
+      } else {
+        graph.hideGrid()
       }
     },
     onAddCellRelationship(node) {
@@ -442,6 +450,9 @@ export default {
         }
       })
     },
+    onSaveCellInfo() {
+
+    },
     showPort() {
       // 显示当前 Port
     }
@@ -450,6 +461,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@keyframes ant-line {
+  to {
+    stroke-dashoffset: -1000;
+  }
+}
 .tool-bar {
   height: 48px;
   width: 100%;
@@ -457,20 +473,12 @@ export default {
   align-items: center;
   justify-content: center;
 
-  button {
-    height: 28px;
-    font-size: 16px;
-    font-weight: 540;
-    // width: ;
-    font-family: Avenir, Helvetica, Arial, sans-serif;
-    margin: 0 12px;
-  }
 }
 
 .graph-container {
   border: 1px solid #ccc;
   border-radius: 6px;
-  height: 800px;
+  height: 90vh;
   width: calc(100% - 40px);
   overflow: hidden;
   display: flex;
@@ -478,9 +486,9 @@ export default {
   margin: 20px;
 
   .graph-adder {
-    height: 800px;
+    height: 90vh;
     position: relative;
-    width: 200px;
+    width: 260px;
     background-color: pink;
   }
 

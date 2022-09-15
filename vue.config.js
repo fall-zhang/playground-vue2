@@ -4,5 +4,6 @@ module.exports = defineConfig({
   // pluginOptions: {
   //   eslint: false
   // }
+  runtimeCompiler: true,
   lintOnSave: false
 })
