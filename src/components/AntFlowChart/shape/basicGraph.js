@@ -48,3 +48,16 @@ export const getBasicEdge = (from, to) =>
     target: to,
     zIndex: 1
   })
+
+export function createCircle(color) {
+  return new Shape.Circle({
+    width: 25,
+    height: 25,
+    attrs: {
+      body: {
+        strokeWidth: 0,
+        fill: color
+      }
+    }
+  })
+}

@@ -7,14 +7,15 @@
   <!-- 添加图例功能，帮助用户使用 -->
   <!-- 配置滚轮缩放还是，ctrl 缩放 -->
   <!-- 配置直接可以拖动，还是长按空格可拖动 -->
-  <!-- 点击连接节点时，显示1/2/3 作为先后点击的内容 -->
+  <!-- 点击连接节点时，显示 1/2/3 作为先后点击的内容 -->
   <div>
     <div class="tool-bar">
       <!-- 来大佬大佬大佬大佬 {{ JSON.stringify(baorr.gogo) }} -->
       <!-- <button type="primary" @click="onAddNode">添加单个图形</button> -->
       <div style="margin-right: 10px;">
-        <el-button size="medium" type="primary">保存</el-button>
+        <el-button size="medium" type="primary" @click="onSaveChart">保存</el-button>
         <el-button size="medium"  type="primary">导入</el-button>
+        <el-button size="medium"  type="primary" @click="onExoprt">导出</el-button>
         <el-button size="medium" type="primary">撤销</el-button>
         <el-button size="medium" type="primary">重做</el-button>
       </div>
@@ -31,12 +32,15 @@
       <div ref="antVContainer" class="graph-editor"></div>
       <div ref="antVAdder2" class="graph-adder">
         <div>
-          <button @click="onAddCellRelationship(selectCell.node)">
+          <button @click="onAddCellRelationship()">
             添加节点
           </button>
           <button @click="onConnectRelativeRect()">连接节点</button>
         </div>
         <div style="height: 80%">
+          <div style="height:50%;overflow:scroll">
+            {{JSON.stringify(selectCell.value)}}
+          </div>
           <el-form ref="form"  label-width="60px">
             <el-form-item label="ID">
               <el-input size="small"></el-input>
@@ -53,11 +57,11 @@
 </template>
 <script>
 import { Graph, DataUri, Addon } from '@antv/x6'
-// import { getBasicRect } from './shape/basicGraph.js'
-import { getSpecialCircle } from './shape/specialGraph.js'
-// import moment from 'dayjs'
-import graphData from './graphData.js'
-import './registerComponents.js'
+import graphData from './fake.json'
+// 注册并引入特殊组件内容
+import { createCircle } from './shape/basicGraph.js'
+import { getStationCircle,CircleBlueWord,GreenWord,Breaker } from './shape/specialGraph.js'
+// import './shape/registerComponents.js'
 // 引入自定义组件文件
 export default {
   name: 'AntVGraph',
@@ -71,15 +75,12 @@ export default {
         dragGraph: true, // 移动画布
         showGrid: false, // 展示网格
         smartConnect: false, // 智能连接
-        canZoom:true,
+        canZoom:true, // 能否缩放
         deleteEdgeConfirm: true
       },
       selectCell: {
-        id: '',
-        cell: null,
-        cellId: '',
-        node: null,
-        mouseOverCell: null
+        type: '',
+        value: null
       },
       allEdges: []
     }
@@ -125,26 +126,46 @@ export default {
             name: 'basicShape',
             title: '基本组件',
             graphWidth: 200,
-            graphHeight: 300
+            graphHeight: 300,
+            collapsed:true
           },
           {
             name: 'specialShape',
             title: '特定组件',
             graphWidth: 200,
-            graphHeight: 300
+            graphHeight: 300,
+            collapsed:true
+          },
+          {
+            name:'oldShape',
+            title:'旧式组件'
           }
         ]
       })
-      // const r1 = getBasicRect()
-      const circle = getSpecialCircle()
+      const circle = getStationCircle()
+      const basicShape = [
+        createCircle('#407aee'), // 蓝
+        createCircle('#73f26f'), // 绿
+        createCircle('#e8694b'), // 红
+        createCircle('#f3d854'), // 黄
+        createCircle('#5d5c57') // 黑
+      ]
+      stencil.load(basicShape, 'basicShape')
       stencil.load([circle], 'specialShape')
+      const specialShape = [
+        new CircleBlueWord(),
+        new GreenWord(),
+        new Breaker()
+      ]
+      stencil.load(specialShape, 'oldShape')
       // stencil
       this.$refs['antVAdder'].appendChild(stencil.container)
     },
     registerEvents() {
       const { graph } = this
-      graph.on('cell:selected', (args) => {
-        this.selectCell.cellId = args.cell.id
+      graph.on('cell:selected', () => {
+        // this.selectCell.value = cell
+        // this.selectCell.type = 'cell'
       })
       graph.on('cell:click', ({ cell }) => {
         graph.select(cell)
@@ -158,7 +179,9 @@ export default {
         this.selectCell.mouseOverCell = null
       })
       graph.on('node:click', ({ node }) => {
-        this.selectCell.node = node
+        // this.selectCell.node = node
+        this.selectCell.value = node
+        this.selectCell.type = 'node'
       })
       graph.on('edge:mouseenter', ({ edge }) => {
         // console.log(edge.getSource())
@@ -185,7 +208,10 @@ export default {
         graph.removeNode(edge)
       })
       graph.on('blank:click', () => {
-        // this.controlType = 'graph'
+        this.selectCell = {
+          type:'',
+          value:null
+        }
       })
       graph.on('selection:changed', (args) => {
         args.added.forEach((cell) => {
@@ -225,9 +251,15 @@ export default {
       }
     },
     onToggleZoom() {
+      const { graph } = this
+      if(this.setting.canZoom) {
+        graph.enableMouseWheel()
+      }else{
+        graph.disableMouseWheel()
+      }
       console.log(this.graph.toJSON())
     },
-    onDownload() {
+    onExoprt() {
       this.graph.toPNG(
         (dataUri) => {
           // 下载
@@ -244,11 +276,6 @@ export default {
       )
     },
     onTogglePort() {
-      // if (this.setting.showPort) {
-      //   this.setting.showPort = false
-      // } else {
-      //   this.setting.showPort = true
-      // }
     },
     onToggleDrag() {
       // console.log(this.setting.dragGraph)
@@ -273,9 +300,17 @@ export default {
         graph.hideGrid()
       }
     },
-    onAddCellRelationship(node) {
+    onSaveChart() {
+      console.log(this.graph.toJSON())
+    },
+    onAddCellRelationship() {
+      let node = null
+      if(this.selectCell.type !== 'node') {
+        return
+      }
+      node = this.selectCell.value
       const { x, y } = node.position()
-      const shape1 = getSpecialCircle('名字', {
+      const shape1 = getStationCircle('名字', {
         x: x,
         y: y
       })

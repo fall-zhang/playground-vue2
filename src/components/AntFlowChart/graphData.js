@@ -104,42 +104,5 @@ export default {
       source: 'node1', // String，必须，起始节点 id
       target: 'node2' // String，必须，目标节点 id
     }
-    // {
-    //   source: { cell: 'node1', port: 'port1' }, // String，必须，起始节点 id
-    //   target: 'node2' // String，必须，目标节点 id
-    // }
   ]
 }
-
-// [
-//   { id: item + '-1', group: 'around' },
-//   {
-//     id: 'blank-' + 2 * index + 1,
-//     group: 'around',
-//     attrs: {
-//       circle: {
-//         r: 3,
-//         magnet: false,
-//         stroke: 'transparent',
-//         fill: 'transparent',
-//         strokeWidth: 0
-//       }
-//     }
-//   },
-//   { id: item + '-2', group: 'around' },
-//   { id: item + '-3', group: 'around' },
-//   {
-//     id: 'blank-' + 2 * index,
-//     group: 'around',
-//     attrs: {
-//       circle: {
-//         r: 3,
-//         magnet: false,
-//         stroke: 'transparent',
-//         fill: 'transparent',
-//         strokeWidth: 0
-//       }
-//     }
-//   },
-//   { id: item + '-4', group: 'around' }
-// ]
