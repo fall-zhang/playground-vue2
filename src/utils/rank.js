@@ -1,6 +1,14 @@
-const arr = [9, 55, 7, 22, 78, 56, 33, 52]
-function defineSort(arr, arg = '') {
-  if (arg) {
+// const arr = [9, 55, 7, 22, 78, 56, 33, 52]
+export function defineSort(arr, arg = '', arg2 = '') {
+  if (arg && arg2) {
+    arr.sort((left, right) => {
+      if (left[arg][arg2] > right[arg][arg2]) {
+        // 左侧大于右侧，right 在后
+        return -1
+      }
+      return 1
+    })
+  } else if (arg) {
     arr.sort((left, right) => {
       if (left[arg] > right[arg]) {
         // 左侧大于右侧，right 在后
@@ -13,8 +21,8 @@ function defineSort(arr, arg = '') {
   }
   return arr
 }
-console.log(defineSort(arr))
-function arrGroup(arr, size) {
+// console.log(defineSort(arr))
+export function defineGroup(arr, size) {
   const result = []
   let group = []
   arr.forEach((item, index) => {
@@ -29,22 +37,6 @@ function arrGroup(arr, size) {
   })
   return result
 }
-console.log(arrGroup(arr, 3))
-// 计算所需行列
-function chartHeight(count) {
-  let width = 3
-  let height = 3
-  if (count > 200 || count < 0) {
-    throw new TypeError('节点个数错误，最多支持200个节点')
-  }
-  while (width * height < count) {
-    width += 1
-    if (width * height < count) {
-      height += 1
-    } else {
-      break
-    }
-  }
-  return [width, height]
-}
-console.log(chartHeight(164))
+// console.log(arrGroup(arr, 3))
+
+// console.log(chartHeight(164))

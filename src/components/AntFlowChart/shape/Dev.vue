@@ -40,11 +40,9 @@
       class="circle-img abs-left circle-img-g"
     ></div>
     <div class="circle-font abs-left" style="cursor: pointer">
-      <div style="height:100%;width: 100%;position: relative;">
+      <div style="">
         <!-- <span :style="{ color: numColor }">{{ load }}</span> -->
-        <div style="width: 100%;height: 30px;display:flex;align-items:center;justify-content: center;">
-          <span :style="{ color: 'white' }">{{ load }}</span>
-        </div>
+        <span :style="{ color: 'white' }">{{ load }}</span>
       </div>
     </div>
     <div
@@ -359,17 +357,18 @@ export default {
 }
 
 .circle-font {
-  /* width: 35px;
-  height: 30px; */
-  /* top: calc(27px - 4px);
-  left: calc(24px - 4px); */
+  width: 35px;
+  height: 30px;
+  top: calc(27px - 4px);
+  left: calc(24px - 4px);
   font-size: 14px;
-  /* text-align: center; */
-  /* line-height: 30px; */
+  text-align: center;
+  line-height: 30px;
   color: #ffffff;
 }
 
 .abs-left {
+  float: left;
   position: absolute;
 }
 </style>

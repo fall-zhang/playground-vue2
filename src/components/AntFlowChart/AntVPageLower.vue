@@ -10,14 +10,13 @@
   <!-- 点击连接节点时，显示 1/2/3 作为先后点击的内容 -->
   <div>
     <div class="tool-bar">
-      <!-- 来大佬大佬大佬大佬 {{ JSON.stringify(baorr.gogo) }} -->
-      <!-- <button type="primary" @click="onAddNode">添加单个图形</button> -->
       <div style="margin-right: 10px;">
         <el-button size="medium" type="primary" @click="onSaveChart">保存</el-button>
         <el-button size="medium"  type="primary">导入</el-button>
         <el-button size="medium"  type="primary" @click="onExoprt">导出</el-button>
         <el-button size="medium" type="primary">撤销</el-button>
         <el-button size="medium" type="primary">重做</el-button>
+        <el-button size="medium" type="primary" @click="updateGraph">待定</el-button>
       </div>
       <div style="border-left:1px solid #aaa;padding-left: 10px;">
         <el-checkbox v-model="setting.showPort" @change="onTogglePort"> 连接功能</el-checkbox>
@@ -57,10 +56,12 @@
 </template>
 <script>
 import { Graph, DataUri, Addon } from '@antv/x6'
-import graphData from './fake.json'
+import graphData from './graph.json'
 // 注册并引入特殊组件内容
 import { createCircle } from './shape/basicGraph.js'
 import { getStationCircle,CircleBlueWord,GreenWord,Breaker } from './shape/specialGraph.js'
+import { defineSort,defineGroup }from '@/utils/rank.js'
+import { chartSize }from './utils.js'
 // import './shape/registerComponents.js'
 // 引入自定义组件文件
 export default {
@@ -86,8 +87,6 @@ export default {
     }
   },
   mounted() {
-    // 图形编辑区域
-    // this.initGraphComponents()
     this.initGraphZone()
     this.initGraphAdder()
     this.registerEvents()
@@ -173,7 +172,6 @@ export default {
       })
       graph.on('node:mouseenter', ({ node }) => {
         this.selectCell.mouseOverCell = node
-        this.showPort(node, true)
       })
       graph.on('node:mouseleave', () => {
         this.selectCell.mouseOverCell = null
@@ -241,6 +239,30 @@ export default {
           }
         })
       })
+    },
+    updateGraph() {
+      // 筛选 rect
+      const rects = graphData.cells.filter(item => ['circle'].includes(item.shape))
+      // 根据维度排序
+      const arr1 = defineSort(rects,'data','longitude')
+      // 计算图像的大小，比如 5 * 5 的节点
+      const size = chartSize(arr1.length)
+      let widthSize = Math.max(...size)
+      let heightSize = Math.min(...size)
+      const group = defineGroup(arr1)
+      for(let i = 0;i < group.length;i++) {
+        defineSort(group[i],'data','latitude').reverse()
+      }
+      console.log(group)
+      for(let i = 0;i < widthSize;i++) {
+        for(let j = 0;j < heightSize;j++) {
+          let position = {
+            x:i * 100,
+            y:j * 100
+          }
+        }
+      }
+      // const size = []
     },
     onSmartConnect() {
       const { setting, graph } = this
@@ -403,7 +425,7 @@ export default {
       })
       // console.log(selectNodes)
       for (let i = 0; i < selectNodes.length; i++) {
-        console.log('执行了', i)
+        // console.log('执行了', i)
         if (i + 1 === selectNodes.length) {
           this.addConnect(selectNodes.at(i), selectNodes.at(0))
         } else {
@@ -412,7 +434,7 @@ export default {
       }
       const update = (edge) => {
         const edgeView = graph.findViewByCell(edge)
-        console.log('update')
+        // console.log('update')
         edgeView.update()
       }
       selectNodes.forEach((edge) => {
@@ -487,9 +509,6 @@ export default {
     },
     onSaveCellInfo() {
 
-    },
-    showPort() {
-      // 显示当前 Port
     }
   }
 }
