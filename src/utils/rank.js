@@ -29,14 +29,12 @@ export function defineGroup(arr, size) {
     if (index % size) {
       group.push(item)
     } else {
-      if (index !== 0) {
-        result.push(group)
-      }
       group = [item]
+      result.push(group)
     }
   })
   return result
 }
-// console.log(arrGroup(arr, 3))
+// console.log(defineGroup(arr, 3))
 
 // console.log(chartHeight(164))

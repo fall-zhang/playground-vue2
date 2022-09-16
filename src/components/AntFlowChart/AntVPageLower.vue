@@ -16,10 +16,12 @@
         <el-button size="medium"  type="primary" @click="onExoprt">导出</el-button>
         <el-button size="medium" type="primary">撤销</el-button>
         <el-button size="medium" type="primary">重做</el-button>
-        <el-button size="medium" type="primary" @click="updateGraph">待定</el-button>
+        <el-button size="medium" type="primary" @click="updateGraph">更新排列</el-button>
+        <el-button size="medium" type="primary" @click="updateRect">连接节点</el-button>
+        <el-button size="medium" type="primary" @click="updateRect">连接点</el-button>
       </div>
       <div style="border-left:1px solid #aaa;padding-left: 10px;">
-        <el-checkbox v-model="setting.showPort" @change="onTogglePort"> 连接功能</el-checkbox>
+        <el-checkbox v-model="setting.showPort" @change="onTogglePort">连接功能</el-checkbox>
         <el-checkbox v-model="setting.dragGraph" @change="onToggleDrag">移动画布</el-checkbox>
         <el-checkbox v-model="setting.smartConnect" @change="onSmartConnect">智能连接</el-checkbox>
         <el-checkbox v-model="setting.showGrid" @change="onToggleGrid">显示网格</el-checkbox>
@@ -34,7 +36,7 @@
           <button @click="onAddCellRelationship()">
             添加节点
           </button>
-          <button @click="onConnectRelativeRect()">连接节点</button>
+          <button @click="onConnectRelativeRect">连接节点</button>
         </div>
         <div style="height: 80%">
           <div style="height:50%;overflow:scroll">
@@ -56,7 +58,7 @@
 </template>
 <script>
 import { Graph, DataUri, Addon } from '@antv/x6'
-import graphData from './graph.json'
+import graphData from './fake.json'
 // 注册并引入特殊组件内容
 import { createCircle } from './shape/basicGraph.js'
 import { getStationCircle,CircleBlueWord,GreenWord,Breaker } from './shape/specialGraph.js'
@@ -170,6 +172,22 @@ export default {
         graph.select(cell)
         this.selectCell.cell = cell
       })
+      this.graph.on('edge:mouseenter', ({ edge }) => {
+        console.log(edge)
+        edge.addTools([
+          { name: 'segments' },
+          { name: 'button' },
+          { name: 'source-arrowhead' },
+          { name: 'target-arrowhead' }
+          // { name: 'vertices' }  // 添加电厂站节点
+        ])
+        edge.appendLabel({
+          attrs: { label: { text: '电厂站' } }
+        })
+      })
+      this.graph.on('edge:mouseleave', ({ edge }) => {
+        edge.removeTools()
+      })
       graph.on('node:mouseenter', ({ node }) => {
         this.selectCell.mouseOverCell = node
       })
@@ -241,6 +259,7 @@ export default {
       })
     },
     updateGraph() {
+      const { graph } = this
       // 筛选 rect
       const rects = graphData.cells.filter(item => ['circle'].includes(item.shape))
       // 根据维度排序
@@ -249,20 +268,33 @@ export default {
       const size = chartSize(arr1.length)
       let widthSize = Math.max(...size)
       let heightSize = Math.min(...size)
-      const group = defineGroup(arr1)
+      const group = defineGroup(arr1,widthSize)
       for(let i = 0;i < group.length;i++) {
         defineSort(group[i],'data','latitude').reverse()
       }
       console.log(group)
-      for(let i = 0;i < widthSize;i++) {
+      for(let i = 0;i < group.length;i++) {
         for(let j = 0;j < heightSize;j++) {
           let position = {
-            x:i * 100,
-            y:j * 100
+            x:j * 200 + 40,
+            y:i * 200 + 40
+          }
+          if(j % 2) {
+            position.y += 100
+          }
+          if(group[i][j]) {
+            const cell = graph.getCellById(group[i][j].id)
+            // console.log(cell.isNode())
+            console.log(cell.position(position.x,position.y))
+            // cell.setAttrs(cell.attr(),{
+            //   position: position
+            // })
           }
         }
       }
-      // const size = []
+    },
+    updateRect() {
+
     },
     onSmartConnect() {
       const { setting, graph } = this
@@ -497,14 +529,14 @@ export default {
       graph.addEdge({
         shape: 'edge', // 指定使用何种图形，默认值为 'edge'
         source: { cell: rect1, port: connectPortSource },
-        target: { cell: rect2, port: connectTarget.target },
-        router: {
-          name: 'manhattan',
-          args: {
-            startDirections: position.split('-'),
-            endDirections: position.split('-')
-          }
-        }
+        target: { cell: rect2, port: connectTarget.target }
+        // router: {
+        //   name: 'manhattan',
+        //   args: {
+        //     startDirections: position.split('-'),
+        //     endDirections: position.split('-')
+        //   }
+        // }
       })
     },
     onSaveCellInfo() {
