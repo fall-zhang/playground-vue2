@@ -69,13 +69,13 @@
             <el-button
               size="mini"
               @click="handleImport(scope.$index, scope.row)"
-              >导入</el-button
+            >导入</el-button
             >
             <el-button
               size="mini"
               type="danger"
               @click="handleDelete(scope.$index, scope.row)"
-              >删除</el-button
+            >删除</el-button
             >
           </template>
         </el-table-column>

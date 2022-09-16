@@ -110,7 +110,6 @@ export default {
           multiple: false
         }
       })
-      // this.graph.fromJSON(graphData)
     },
     initGraphAdder() {
       const { graph } = this
@@ -488,7 +487,7 @@ export default {
         bottom: ['bottom-3','bottom-2','bottom-1','bottom-4'],
         right: ['right-3','right-2','right-1','right-4'],
         'right-top': ['top-4','right-1','top-3','right-2'],
-        'left-top': ['top-1','left-4','top-2','bottom-3'],
+        'left-top': ['top-1','left-4','top-2','left-3'],
         'right-bottom': ['right-4','bottom-1','bottom-2','right-3'],
         'left-bottom': ['left-1','bottom-4','bottom-3','left-2']
       }
