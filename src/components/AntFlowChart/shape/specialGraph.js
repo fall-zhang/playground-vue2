@@ -17,7 +17,8 @@ factory()
 // circleRed()
 // circleYellow()
 // circleBlack()
-export function getStationCircle(label, config) {
+const specialInfo = getSpecialInfo()
+function getSpecialInfo() {
   const direction = ['top', 'right', 'bottom', 'left']
   let portItems = []
   direction.forEach((item, index) => {
@@ -55,7 +56,6 @@ export function getStationCircle(label, config) {
   const node = {
     width: 80, // Number，可选，节点大小的 width 值
     height: 80, // Number，可选，节点大小的 height 值
-    label: '我我我我', // String，节点标签
     // angle: -8,
     ports: {
       groups: {
@@ -75,16 +75,19 @@ export function getStationCircle(label, config) {
       items: portItems
     }
   }
+  return node
+}
+export function getStationCircle(label, config) {
   let configObj = {}
   if (config && typeof config == 'object') {
     configObj = config
   }
   return new Shape.Circle({
-    x: 500, // Number，必选，节点位置的 x 值
-    y: 500, // Number，必选，节点位置的 y 值
-    label: label || '',
+    x: 0, // Number，必选，节点位置的 x 值
+    y: 0, // Number，必选，节点位置的 y 值
+    label: label || '默认标签',
     zIndex: 2,
-    ...node,
+    ...specialInfo,
     ...configObj
   })
 }

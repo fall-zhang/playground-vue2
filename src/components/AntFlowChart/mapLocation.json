@@ -1,0 +1,395 @@
+{
+  "subData": [
+    {
+      "geometry": {
+        "coordinates": [
+          "118.720000",
+          "32.020000"
+        ],
+        "type": "Point"
+      },
+      "type": null,
+      "base64": "",
+      "properties": {
+        "dydj": "220kV",
+        "name": "富城变",
+        "stid": "113997366104687312",
+        "subType": "SUBSTATION",
+        "load": "",
+        "loadRate": "",
+        "num": "0",
+        "markerColor": null,
+        "eventType": null,
+        "eventTypeWithNum": null,
+        "eventLevel": null
+      },
+      "transformers": []
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          "118.654200",
+          "31.927000"
+        ],
+        "type": "Point"
+      },
+      "type": null,
+      "base64": "",
+      "properties": {
+        "dydj": "220kV",
+        "name": "大胜关变",
+        "stid": "113997366104686752",
+        "subType": "SUBSTATION",
+        "load": "",
+        "loadRate": "",
+        "num": "0",
+        "markerColor": null,
+        "eventType": null,
+        "eventTypeWithNum": null,
+        "eventLevel": null
+      },
+      "transformers": []
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          "118.710000",
+          "31.960000"
+        ],
+        "type": "Point"
+      },
+      "type": null,
+      "base64": "",
+      "properties": {
+        "dydj": "220kV",
+        "name": "滨南变",
+        "stid": "113997366104687136",
+        "subType": "SUBSTATION",
+        "load": "",
+        "loadRate": "",
+        "num": "0",
+        "markerColor": null,
+        "eventType": null,
+        "eventTypeWithNum": null,
+        "eventLevel": null
+      },
+      "transformers": []
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          "118.742100",
+          "32.045600"
+        ],
+        "type": "Point"
+      },
+      "type": null,
+      "base64": "",
+      "properties": {
+        "dydj": "220kV",
+        "name": "莫愁湖变",
+        "stid": "113997366104686879",
+        "subType": "SUBSTATION",
+        "load": "",
+        "loadRate": "",
+        "num": "0",
+        "markerColor": null,
+        "eventType": null,
+        "eventTypeWithNum": null,
+        "eventLevel": null
+      },
+      "transformers": []
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          "118.723900",
+          "31.979100"
+        ],
+        "type": "Point"
+      },
+      "type": null,
+      "base64": "",
+      "properties": {
+        "dydj": "220kV",
+        "name": "双闸变",
+        "stid": "113997366104686943",
+        "subType": "SUBSTATION",
+        "load": "",
+        "loadRate": "",
+        "num": "0",
+        "markerColor": null,
+        "eventType": null,
+        "eventTypeWithNum": null,
+        "eventLevel": null
+      },
+      "transformers": []
+    }
+  ],
+  "lineData": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.72",
+            "32.02"
+          ],
+          [
+            "118.7239",
+            "31.9791"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.2",
+        "nodeFrom": "113997366104686943",
+        "icon": "",
+        "aclineId": "116530640895084171",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "双富2Y20线",
+        "id": "116530640895084171",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104687312"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.7239",
+            "31.9791"
+          ],
+          [
+            "118.7421",
+            "32.0456"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.4",
+        "nodeFrom": "113997366104686879",
+        "icon": "",
+        "aclineId": "116530640895083229",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "莫双4547线",
+        "id": "116530640895083229",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104686943"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.72",
+            "32.02"
+          ],
+          [
+            "118.7239",
+            "31.9791"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.5",
+        "nodeFrom": "113997366104686943",
+        "icon": "",
+        "aclineId": "116530640895084170",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "双富2Y19线",
+        "id": "116530640895084170",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104687312"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.6542",
+            "31.927"
+          ],
+          [
+            "118.7239",
+            "31.9791"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.4",
+        "nodeFrom": "113997366104686943",
+        "icon": "",
+        "aclineId": "116530640895083240",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "双胜2Y18线",
+        "id": "116530640895083240",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104686752"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.7239",
+            "31.9791"
+          ],
+          [
+            "118.7421",
+            "32.0456"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.5",
+        "nodeFrom": "113997366104686879",
+        "icon": "",
+        "aclineId": "116530640895083230",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "莫双4548线",
+        "id": "116530640895083230",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104686943"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.6542",
+            "31.927"
+          ],
+          [
+            "118.7239",
+            "31.9791"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.1",
+        "nodeFrom": "113997366104686943",
+        "icon": "",
+        "aclineId": "116530640895083239",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "双胜2Y17线",
+        "id": "116530640895083239",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104686752"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.71",
+            "31.96"
+          ],
+          [
+            "118.7239",
+            "31.9791"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.4",
+        "nodeFrom": "113997366104686943",
+        "icon": "",
+        "aclineId": "116530640895083963",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "滨双2M22线",
+        "id": "116530640895083963",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104687136"
+      }
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            "118.71",
+            "31.96"
+          ],
+          [
+            "118.7239",
+            "31.9791"
+          ]
+        ],
+        "type": "LineString"
+      },
+      "type": "Feature",
+      "properties": {
+        "ycFromQC": "",
+        "ycToQC": "",
+        "curveness": "0.5",
+        "nodeFrom": "113997366104686943",
+        "icon": "",
+        "aclineId": "116530640895083962",
+        "ycLineQC": "P:0.00千万瓦",
+        "timeQC": "",
+        "dydj": "220kV",
+        "timeFromQC": "",
+        "timeToQC": "",
+        "name": "滨双2M21线",
+        "id": "116530640895083962",
+        "ycLineQCLoad": "0.00",
+        "nodeTo": "113997366104687136"
+      }
+    }
+  ]
+}
