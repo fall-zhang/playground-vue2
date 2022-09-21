@@ -15,3 +15,16 @@ export function chartSize(count) {
   }
   return [width, height]
 }
+export function defineGroup(arr, size) {
+  const result = []
+  let group = []
+  arr.forEach((item, index) => {
+    if (index % size) {
+      group.push(item)
+    } else {
+      group = [item]
+      result.push(group)
+    }
+  })
+  return result
+}

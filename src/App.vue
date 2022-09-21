@@ -1,10 +1,11 @@
 <template>
   <div id="app">
-    <router-view />
     <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+      <router-link to="/">Graph应用</router-link> |
+      <router-link to="/animate">动画应用</router-link> |
+      <router-link to="/other">其它应用</router-link>
     </nav>
+    <router-view />
   </div>
 </template>
 
@@ -17,8 +18,13 @@
   color: #2c3e50;
 }
 
+body {
+  margin: 0;
+}
+
 nav {
-  padding: 30px;
+  padding: 20px;
+  text-align: center;
 
   a {
     font-weight: bold;

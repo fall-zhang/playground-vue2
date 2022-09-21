@@ -61,13 +61,18 @@ import graphData from './mapLocation.json'
 // 注册并引入特殊组件内容
 import { createCircle } from './shape/basicGraph.js'
 import { getStationCircle,CircleBlueWord,GreenWord,Breaker } from './shape/specialGraph.js'
-import { defineGroup }from '@/utils/rank.js'
-import { chartSize }from './utils.js'
+import { chartSize,defineGroup }from './utils.js'
 // import './shape/registerComponents.js'
 // 引入自定义组件文件
 export default {
   name: 'AntVGraph',
-  props: {},
+  props: {
+    data:{
+      require:true,
+      default:'遇到',
+      type:String
+    }
+  },
   emits: ['selectCell'],
   data() {
     return {
@@ -192,7 +197,7 @@ export default {
         ])
         edge.appendLabel({
           attrs: {
-            label: { text: '电厂站' },
+            // label: { text: '电厂站' },
             rect:{
               event:'edge:click',
               fill:'#2fc'
@@ -295,11 +300,14 @@ export default {
       for(let i = 0;i < group.length;i++) {
         for(let j = 0;j < heightSize;j++) {
           let position = {
-            x:j * 200 + 40,
-            y:i * 200 + 40
+            x:j * 160 + 40,
+            y:i * 240 + 40
           }
+          // if(i % 2) { // 一行中，偶数个变电站会向下移动
+          //   position.x += 120
+          // }
           if(j % 2) { // 一行中，偶数个变电站会向下移动
-            position.y += 100
+            position.y += 120
           }
           if(group[i][j]) {
             const rect = group[i][j]
