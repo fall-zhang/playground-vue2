@@ -1,6 +1,10 @@
 <template>
   <div class="about">
-    <ImageButton />
+    <div style="display:flex;align-items:center;justify-content:center">
+      <ImageButton label="安全管理">
+
+      </ImageButton>
+    </div>
     <!-- <router-view></router-view> -->
     <button @click="onClick">点击 </button>
   </div>

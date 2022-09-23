@@ -28,7 +28,7 @@
     </div>
     <div class="right-zone">
       <h2>
-        奇迹再现
+        安全生产
       </h2>
     </div>
   </div>
@@ -46,16 +46,17 @@ export default {
 .container {
   display: flex;
   align-items: center;
+  height: 120px;
 
   .right-zone {
-    height: 60px;
+    height: 80px;
     border: 6px solid black;
-    border-radius: 0 40px 40px 0;
+    border-radius: 0 60px 60px 0;
     // border-radius: 0 80px 10px 0;
     margin-left: -60px;
     padding-left: 60px;
     width: 200px;
-    line-height: 60px;
+    line-height: 80px;
 
     h2 {
       margin: 0
@@ -81,6 +82,20 @@ export default {
     }
   }
 
+  &:hover {
+    color: orange;
+    transition: 2s;
+
+    .right-zone {
+      transition: 2s;
+      border-color: orange;
+    }
+
+    .left-zone {
+      transition: 2s;
+      border-color: rgb(255, 195, 83);
+    }
+  }
 }
 
 @keyframes autoMove {
