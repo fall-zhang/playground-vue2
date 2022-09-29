@@ -1,30 +1,35 @@
 <template>
   <div class="about">
     <div style="display:flex;align-items:center;justify-content:center">
-      <ImageButton label="安全管理">
-
+      <ImageButton title="安全守则">
       </ImageButton>
     </div>
+    <ScanContent :enable="enableScan" />
     <!-- <router-view></router-view> -->
-    <button @click="onClick">点击 </button>
+    <el-button type="primary" @click="onToggleScan">{{enableScan?'关闭':'开启'}}扫描</el-button>
+    <h2>详情列表：</h2>
+    <MultiContent />
+    <CollapseContent></CollapseContent>
   </div>
 </template>
 <script>
 import ImageButton from '@/components/ImageButton/SvgAndContent.vue'
+import ScanContent from '@/components/animate/ScanContent.vue'
+import MultiContent from '@/components/animate/MultiContent.vue'
+import CollapseContent from '@/components/animate/CollapseContent.vue'
 export default {
   components: {
-    ImageButton
+    ImageButton, ScanContent, MultiContent, CollapseContent
   },
   data() {
     return {
+      enableScan: true,
       animate: true
     }
   },
   methods: {
-    onClick() {
-      console.log(this.$router)
-      postMessage('发送一点内容', 'http://localhost:8081/')
-      this.$router.push({ name: 'home', params: { apple: 'ddd' } })
+    onToggleScan() {
+      this.enableScan = !this.enableScan
     }
   }
 }

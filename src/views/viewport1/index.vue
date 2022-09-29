@@ -2,10 +2,10 @@
   <div class="gridsand" id="gridsand">
     <!-- 拓扑图 弹框信息 -->
     <div id="toolTip" class="toolTip">
-      <span style="font-size:20px">{{ stname }}</span><br>
+      <span style="font-size: 20px">{{ stname }}</span
+      ><br />
       <span style="padding-right: 85%">万千瓦</span>
-      <div id="echartToolTip" style="height:90%;width:100%;">
-      </div>
+      <div id="echartToolTip" style="height: 90%; width: 100%"></div>
     </div>
     <div class="left" v-show="showTypeFlag === '1'">
       <div class="filter-wrap">
@@ -14,83 +14,127 @@
         </div>
       </div>
       <div class="content">
-        <div :class="['substaion', { active: subActive == index }]" v-for="(item, index) in stationPrimitiveList"
-          :key="item.name">
+        <div
+          :class="['substaion', { active: subActive == index }]"
+          v-for="(item, index) in stationPrimitiveList"
+          :key="item.name"
+        >
           {{ item.name }}
           <p>{{ item.name }}</p>
         </div>
       </div>
     </div>
-    <div style="display: flex;width:98vw;overflow: hidden;">
-      <div class="middle" id="middle-wrap" style="flex:1 0;">
+    <div style="display: flex; width: 98vw; overflow: hidden">
+      <div class="middle" id="middle-wrap" style="flex: 1 0">
         <div class="middle-box echart-render-box" id="echart-render-box">
           <div class="filter-box">
             <div class="filter-item">
               <span class="filter-item-label">类型：</span>
-              <a-select dropdownClassName="dropdownClassName" default-value="0" style="width: 80px"
-                @change="showTypeFlagChange">
-                <a-select-option value="0">
-                  全网
-                </a-select-option>
-                <a-select-option value="1">
-                  GIS
-                </a-select-option>
+              <a-select
+                dropdownClassName="dropdownClassName"
+                default-value="0"
+                style="width: 80px"
+                @change="showTypeFlagChange"
+              >
+                <a-select-option value="0"> 全网 </a-select-option>
+                <a-select-option value="1"> GIS </a-select-option>
               </a-select>
               <span class="filter-item-label">层级：</span>
-              <a-select style="width: 90px" v-model="stHierarchy" @change="handleChange">
-                <a-select-option v-for="item in [
-                  [1, '一级'],
-                  [2, '二级'],
-                  [3, '三级']
-                ]" :key="item[0]" :value="item[0]">
+              <a-select
+                style="width: 90px"
+                v-model="stHierarchy"
+                @change="handleChange"
+              >
+                <a-select-option
+                  v-for="item in [
+                    [1, '一级'],
+                    [2, '二级'],
+                    [3, '三级']
+                  ]"
+                  :key="item[0]"
+                  :value="item[0]"
+                >
                   {{ item[1] }}
                 </a-select-option>
               </a-select>
             </div>
             <div class="filter-item">
               <span class="filter-item-label">时间：</span>
-              <a-date-picker v-model="selectTime" format="YYYY-MM-DD HH:mm" value-format="YYYY-MM-DD HH:mm"
-                @change="handleSubTime" show-time />
+              <a-date-picker
+                v-model="selectTime"
+                format="YYYY-MM-DD HH:mm"
+                value-format="YYYY-MM-DD HH:mm"
+                @change="handleSubTime"
+                show-time
+              />
             </div>
-            <div class="filter-item" style="width:20%;">
+            <div class="filter-item" style="width: 20%">
               <span class="filter-item-label">选择的变电站：</span>
-              <a-select allowClear mode="multiple" dropdownClassName="dropdownClassName" :open="false"
-                v-model="selectStIdArr" placeholder="请选择" style="width:auto;">
-                <a-select-option v-for="item in selectedSubArr" :key="item.ID" :value="item.KEY">
+              <a-select
+                allowClear
+                mode="multiple"
+                dropdownClassName="dropdownClassName"
+                :open="false"
+                v-model="selectStIdArr"
+                placeholder="请选择"
+                style="width: auto"
+              >
+                <a-select-option
+                  v-for="item in selectedSubArr"
+                  :key="item.ID"
+                  :value="item.KEY"
+                >
                   {{ item.VALUE }}
                 </a-select-option>
               </a-select>
             </div>
-            <div class="filter-item" style="float:right;">
+            <div class="filter-item" style="float: right">
               <span class="filter-item-label">线路着色：</span>
-              <a-radio-group name="radioGroup" v-model="renderLineByLoad" @change="handleChangeRenderMap">
-                <a-radio-button value="dydj">
-                  电压等级
-                </a-radio-button>
-                <a-radio-button value="ycLineQCLoad">
-                  负载率
-                </a-radio-button>
+              <a-radio-group
+                name="radioGroup"
+                v-model="renderLineByLoad"
+                @change="handleChangeRenderMap"
+              >
+                <a-radio-button value="dydj"> 电压等级 </a-radio-button>
+                <a-radio-button value="ycLineQCLoad"> 负载率 </a-radio-button>
               </a-radio-group>
-              <span class="filter-item-label" style="margin-left:5px;">图元着色：</span>
-              <a-radio-group name="radioGroup" v-model="renderTyByTense" @change="handleChangeRenderTy">
-                <a-radio-button value="realTense">
-                  实时态
-                </a-radio-button>
+              <span class="filter-item-label" style="margin-left: 5px"
+                >图元着色：</span
+              >
+              <a-radio-group
+                name="radioGroup"
+                v-model="renderTyByTense"
+                @change="handleChangeRenderTy"
+              >
+                <a-radio-button value="realTense"> 实时态 </a-radio-button>
                 <a-radio-button value="maintenanceState">
                   检修态
                 </a-radio-button>
               </a-radio-group>
 
-              <a-checkbox v-show="renderTyByTense === 'realTense'" v-model="realTime" @change="handleChangeRealTime"
-                style="margin-left:5px;"><span class="filter-item-label"> 实时刷新</span>
+              <a-checkbox
+                v-show="renderTyByTense === 'realTense'"
+                v-model="realTime"
+                @change="handleChangeRealTime"
+                style="margin-left: 5px"
+                ><span class="filter-item-label"> 实时刷新</span>
               </a-checkbox>
             </div>
           </div>
           <div class="echart-content">
             <!-- 放大-缩小 -->
-            <a-icon style="font-size: 25px;position: absolute;z-index: 4;right: 0;top: 0;" :type="fullscreenType"
-              @click="handleFullscreen" />
-            <div style="width: 100%; height: 100%;" v-if="showTypeFlag === '0'">
+            <a-icon
+              style="
+                font-size: 25px;
+                position: absolute;
+                z-index: 4;
+                right: 0;
+                top: 0;
+              "
+              :type="fullscreenType"
+              @click="handleFullscreen"
+            />
+            <div style="width: 100%; height: 100%" v-if="showTypeFlag === '0'">
               <div id="showView">
                 <!-- <ShowGraph id="graph" ref="showGraph"></ShowGraph> -->
               </div>
@@ -99,42 +143,65 @@
             <div class="echart-content-float" id="echart-content-float">
               <span @click="closeFloat" class="closeFloat">X</span>
               <div class="box" id="select_subtion">
-                <img id="imgSrcFloat" style="display: block;margin: auto;margin-bottom: 10px;" />
-                <a-select allowClear showSearch v-model="stId" placeholder="请选择" style="width:240px"
-                  :filterOption="false" @search="
-                    val => {
+                <img
+                  id="imgSrcFloat"
+                  style="display: block; margin: auto; margin-bottom: 10px"
+                />
+                <a-select
+                  allowClear
+                  showSearch
+                  v-model="stId"
+                  placeholder="请选择"
+                  style="width: 240px"
+                  :filterOption="false"
+                  @search="
+                    (val) => {
                       stSelectData = $Common.searchfilter(val, 'stSelectData')
                     }
-                  " @change="handleSubstationChange">
-                  <a-select-option v-for="item in stSelectData" :key="item.ID" :value="item.ID">
+                  "
+                  @change="handleSubstationChange"
+                >
+                  <a-select-option
+                    v-for="item in stSelectData"
+                    :key="item.ID"
+                    :value="item.ID"
+                  >
                     {{ item.VALUE }}
                   </a-select-option>
                 </a-select>
               </div>
             </div>
             <!-- 图列 -->
-            <div id="legend" style="width:30%" v-show="showLegend">
-              <span style="font-size:18px;">图例</span>
+            <div id="legend" style="width: 30%" v-show="showLegend">
+              <span style="font-size: 18px">图例</span>
               <!-- 电压等级 -->
               <div v-show="renderLineByLoad == 'dydj'">
                 <p><span>线路</span></p>
                 <!-- <p class="line"><span>500kV</span><span style="background:#0073aa;"></span></p> -->
 
-                <p class="line"><span>220kV</span><span style="background:#16D9A3;"></span></p>
-                <p class="line"><span>110kV</span><span style="background:#DBCF7E;"></span></p>
-                <p class="line"><span>35kV</span><span style="background:#FCA223;"></span></p>
+                <p class="line">
+                  <span>220kV</span><span style="background: #16d9a3"></span>
+                </p>
+                <p class="line">
+                  <span>110kV</span><span style="background: #dbcf7e"></span>
+                </p>
+                <p class="line">
+                  <span>35kV</span><span style="background: #fca223"></span>
+                </p>
               </div>
               <!-- 负载率 -->
               <div v-show="renderLineByLoad == 'ycLineQCLoad'">
                 <p><span>线路</span></p>
-                <p class="line"><span>&lt;80%</span><span style="background:#16D9A3;"></span></p>
+                <p class="line">
+                  <span>&lt;80%</span><span style="background: #16d9a3"></span>
+                </p>
                 <p class="line">
                   <span>80%~90%</span>
-                  <span style="background:#DBCF7E;"> </span>
+                  <span style="background: #dbcf7e"> </span>
                 </p>
                 <p class="line">
                   <span>&gt;90%</span>
-                  <span style="background:#e85d56;"> </span>
+                  <span style="background: #e85d56"> </span>
                 </p>
               </div>
               <div>
@@ -144,14 +211,30 @@
                 <p><span>电厂</span></p>
               </div>
             </div>
-            <a-spin :spinning="echartMapLoad" style="height:100%;width:100%;">
-              <div id="echartBeforeFail" style="height:100%;width:100%;"></div>
+            <a-spin :spinning="echartMapLoad" style="height: 100%; width: 100%">
+              <div
+                id="echartBeforeFail"
+                style="height: 100%; width: 100%"
+              ></div>
             </a-spin>
           </div>
         </div>
-        <div style="width: 100%;" @click="showUnderInfo = showUnderInfo === 1 || showUnderInfo === '1' ? '0' : '1'">
+        <div
+          style="width: 100%"
+          @click="
+            showUnderInfo =
+              showUnderInfo === 1 || showUnderInfo === '1' ? '0' : '1'
+          "
+        >
           <div
-            style="height: 25px; width: 100%; cursor: pointer; text-align: center; background-color: rgba(19,89,104,0.45);">
+            style="
+              height: 25px;
+              width: 100%;
+              cursor: pointer;
+              text-align: center;
+              background-color: rgba(19, 89, 104, 0.45);
+            "
+          >
             <div v-if="showUnderInfo === 1 || showUnderInfo === '1'">
               <i class="el-icon-arrow-down"></i>
               <i class="el-icon-arrow-down"></i>
@@ -164,138 +247,231 @@
             </div>
           </div>
         </div>
-        <div class="middle-box" id="account-info" v-show="showUnderInfo === 1 || showUnderInfo === '1'">
+        <div
+          class="middle-box"
+          id="account-info"
+          v-show="showUnderInfo === 1 || showUnderInfo === '1'"
+        >
           <div class="filter-wrap">
             <div class="title">
               <span>设备信息</span>
             </div>
             <div class="btn-box" v-show="!isHideEchartLine">
-              <p v-for="item in subInfoList" :key="item.TR_ID" :class="{ active: subType == item.TR_ID }"
-                @click="handleChangeSub(item)">
+              <p
+                v-for="item in subInfoList"
+                :key="item.TR_ID"
+                :class="{ active: subType == item.TR_ID }"
+                @click="handleChangeSub(item)"
+              >
                 <span>{{ item.设备名称 }}</span>
               </p>
             </div>
             <div class="risk-box">
               风险定级：
-              <span v-show="riskLevel" :style="'color:' + riskLevelColor(riskLevel)"><em>{{ riskLevel }}</em>级</span>
+              <span
+                v-show="riskLevel"
+                :style="'color:' + riskLevelColor(riskLevel)"
+                ><em>{{ riskLevel }}</em
+                >级</span
+              >
             </div>
             <div class="risk-level">
-              <span style="color: #ffcd00;font-size: 14px;">风险判定依据:</span>
+              <span style="color: #ffcd00; font-size: 14px">风险判定依据:</span>
               <span>{{ riskLevelDetailInfo }}</span>
             </div>
 
-            <div class="lengend" style="height: 100%;float: right;cursor: pointer;">
-            </div>
-            <div class="lengend" style="height: 100%;float: right;cursor: pointer;">
-            </div>
+            <div
+              class="lengend"
+              style="height: 100%; float: right; cursor: pointer"
+            ></div>
+            <div
+              class="lengend"
+              style="height: 100%; float: right; cursor: pointer"
+            ></div>
           </div>
           <div class="content">
             <!-- 风险信息 -->
-            <div class="info-wrap" style="padding:0px;">
+            <div class="info-wrap" style="padding: 0px">
               <a-descriptions :column="2" v-show="!showPt">
-                <a-descriptions-item v-for="item in subInfoItem" :key="item.name" :label="item.name">
+                <a-descriptions-item
+                  v-for="item in subInfoItem"
+                  :key="item.name"
+                  :label="item.name"
+                >
                   {{ item.value }}
                 </a-descriptions-item>
               </a-descriptions>
               <!-- 陪停设备 -->
-              <div style="width:100%" v-show="showPt">
+              <div style="width: 100%" v-show="showPt">
                 <span
-                  style="text-align: center;display: block;color: rgba(92, 236, 255, 1);font-size: 14px;font-weight: bold;">影响设备</span>
-                <a-table :columns="overhaulColumns" :scroll="{ y: 120 }" :data-source="overhaulPlanList" bordered
-                  :pagination="false">
+                  style="
+                    text-align: center;
+                    display: block;
+                    color: rgba(92, 236, 255, 1);
+                    font-size: 14px;
+                    font-weight: bold;
+                  "
+                  >影响设备</span
+                >
+                <a-table
+                  :columns="overhaulColumns"
+                  :scroll="{ y: 120 }"
+                  :data-source="overhaulPlanList"
+                  bordered
+                  :pagination="false"
+                >
                 </a-table>
               </div>
             </div>
             <!-- 图表 -->
             <!--  { isHideEchartLine: isHideEchartLine } -->
             <div class="echarts-wrap">
-              <a-spin :spinning="echartLineLoad" style="height:100%;width:100%;">
-                <div id="echartHistoryLine" style="width:100%;height:100%;"></div>
+              <a-spin
+                :spinning="echartLineLoad"
+                style="height: 100%; width: 100%"
+              >
+                <div
+                  id="echartHistoryLine"
+                  style="width: 100%; height: 100%"
+                ></div>
               </a-spin>
             </div>
           </div>
         </div>
       </div>
       <!-- key 冲突问题定位 -->
-      <div class="right" style="flex:0 0 440px;" :class="fullscreenType === 'fullscreen' ? '' : 'fullscreen'"
-        id="right-wrap">
+      <div
+        class="right"
+        style="flex: 0 0 440px"
+        :class="fullscreenType === 'fullscreen' ? '' : 'fullscreen'"
+        id="right-wrap"
+      >
         <!--  检修申请单 -->
         <div class="right-box">
           <div class="filter-wrap">
             <div class="title">
               <span>检修申请单</span>
             </div>
-            <a-range-picker style="float:right;width:240px;" v-model="selectRangeTime" format="YYYY-MM-DD"
-              value-format="YYYY-MM-DD" @change="handleChangeOverTime">
+            <a-range-picker
+              style="float: right; width: 240px"
+              v-model="selectRangeTime"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+              @change="handleChangeOverTime"
+            >
               <a-icon slot="suffixIcon" type="caret-down" />
             </a-range-picker>
           </div>
-          <div class="content" style="position:relative;overflow: hidden;">
+          <div class="content" style="position: relative; overflow: hidden">
             <div class="filter-box">
-              <div class="filter-item" style=" width: calc(100% - 235px);">
+              <div class="filter-item" style="width: calc(100% - 235px)">
                 <span class="filter-item-label">变电站：</span>
                 <!-- {{selectSubstation}} -->
-                <a-select v-model="filterOverFormBySubId" :maxTagCount="1" mode="tags" style="min-width:120px"
-                  :allowClear="false" @change="handleSubData">
-                  <a-select-option v-for="(item) in selectSubstation" :key="item.YJH_OBJ_ID" :value="item.ID">
+                <a-select
+                  v-model="filterOverFormBySubId"
+                  :maxTagCount="1"
+                  mode="tags"
+                  style="min-width: 120px"
+                  :allowClear="false"
+                  @change="handleSubData"
+                >
+                  <a-select-option
+                    v-for="item in selectSubstation"
+                    :key="item.YJH_OBJ_ID"
+                    :value="item.ID"
+                  >
                     {{ item.VALUE }}
                   </a-select-option>
                 </a-select>
               </div>
               <div class="filter-item">
                 <span class="filter-item-label">排序：</span>
-                <a-select v-model="sortName" style="width: 96px" @change="handleSortByName">
-                  <a-select-option v-for="item in [
-                    { value: 'SUBSORT', label: '变电站' },
-                    { value: 'SQGZKSSJ', label: '申请时间' },
-                    { value: 'COMPANYSORT', label: '申请单位' }
-                  ]" :key="item.value" :value="item.value">
+                <a-select
+                  v-model="sortName"
+                  style="width: 96px"
+                  @change="handleSortByName"
+                >
+                  <a-select-option
+                    v-for="item in [
+                      { value: 'SUBSORT', label: '变电站' },
+                      { value: 'SQGZKSSJ', label: '申请时间' },
+                      { value: 'COMPANYSORT', label: '申请单位' }
+                    ]"
+                    :key="item.value"
+                    :value="item.value"
+                  >
                     {{ item.label }}
                   </a-select-option>
                 </a-select>
               </div>
               <div class="filter-item btn-box">
-                <span :class="{ active: sortBtn == 'asc' }" @click="handleSort('asc')">升</span>
-                <span :class="{ active: sortBtn == 'desc' }" @click="handleSort('desc')">降</span>
+                <span
+                  :class="{ active: sortBtn == 'asc' }"
+                  @click="handleSort('asc')"
+                  >升</span
+                >
+                <span
+                  :class="{ active: sortBtn == 'desc' }"
+                  @click="handleSort('desc')"
+                  >降</span
+                >
               </div>
             </div>
             <div class="filter-content">
-              <div :class="[
-                'filter-content-item',
-                {
-                  'active-arrow': overhaulItemObjIdArr.indexOf(item.OBJID) >= 0,
-                  'active-click': item.OBJID == overhaulItemObjId
-                }
-              ]" v-for="(item, index) in overhaulForm" :key="index + '-' + item.OBJID"
-                @click="handleSelectOverhaulForm(item)">
+              <div
+                :class="[
+                  'filter-content-item',
+                  {
+                    'active-arrow':
+                      overhaulItemObjIdArr.indexOf(item.OBJID) >= 0,
+                    'active-click': item.OBJID == overhaulItemObjId
+                  }
+                ]"
+                v-for="(item, index) in overhaulForm"
+                :key="index + '-' + item.OBJID"
+                @click="handleSelectOverhaulForm(item)"
+              >
                 <div class="filter-content-item-bg-arrow"></div>
                 <div class="filter-content-item-bg"></div>
                 <p class="filter-content-item-title">
                   <span>{{ item.JHBH }}</span>
-                  <span>{{ item.TYDW }}
-                    <em @click.stop="handleEditOverForm(item)" style="font-style:normal;margin-left:5px;">编辑</em>
+                  <span
+                    >{{ item.TYDW }}
+                    <em
+                      @click.stop="handleEditOverForm(item)"
+                      style="font-style: normal; margin-left: 5px"
+                      >编辑</em
+                    >
                   </span>
                 </p>
                 <p class="filter-content-item-time">
                   <span>
                     <em v-show="item.NJH_MATE == 0">年</em>
-                    <em v-show="item.NJH_MATE == 1" class="success">年(正常)</em>
+                    <em v-show="item.NJH_MATE == 1" class="success"
+                      >年(正常)</em
+                    >
                     <em v-show="item.NJH_MATE == 2" class="warn">年(提前)</em>
                     <em v-show="item.NJH_MATE == 3" class="warn">年(延后)</em>
                     <em v-show="item.YJH_MATE == 0">月</em>
-                    <em v-show="item.YJH_MATE == 1" class="success">月(正常)</em>
+                    <em v-show="item.YJH_MATE == 1" class="success"
+                      >月(正常)</em
+                    >
                     <em v-show="item.YJH_MATE == 2" class="warn">月(当月)</em>
                     <em v-show="item.YJH_MATE == 3" class="warn">月(跨月)</em>
                   </span>
                   <span>{{ item.SQGZKSSJ }} 至 {{ item.SQGZJSSJ }}</span>
                 </p>
                 <p class="filter-content-item-info">
-                  <span style="font-weight:bold;display:block;">工作内容：</span>
-                  <span v-html="item.GZNR" style="color:#fff;"></span>
+                  <span style="font-weight: bold; display: block"
+                    >工作内容：</span
+                  >
+                  <span v-html="item.GZNR" style="color: #fff"></span>
                 </p>
                 <p class="filter-content-item-info">
-                  <span style="font-weight:bold;display:block;">停电范围：</span>
-                  <span v-html="item.TDFW" style="color:#fff;"></span>
+                  <span style="font-weight: bold; display: block"
+                    >停电范围：</span
+                  >
+                  <span v-html="item.TDFW" style="color: #fff"></span>
                 </p>
                 <p class="filter-content-item-footer">
                   <span>{{ item.SQDW }}</span>
@@ -313,27 +489,36 @@
           </div>
           <div class="content">
             <div class="filter-content">
-              <div :class="[
-                'filter-content-item',
-                'active-arrow',
-                'active-click',
-                { 'active-click': item.OBJID == gridRiskItemObjId }
-              ]" v-for="item in gridRiskForm" :key="item.OBJID" @click="handleGridRiskForm(item)">
+              <div
+                :class="[
+                  'filter-content-item',
+                  'active-arrow',
+                  'active-click',
+                  { 'active-click': item.OBJID == gridRiskItemObjId }
+                ]"
+                v-for="item in gridRiskForm"
+                :key="item.OBJID"
+                @click="handleGridRiskForm(item)"
+              >
                 <div class="filter-content-item-bg-arrow"></div>
                 <div class="filter-content-item-bg"></div>
-                <p class="filter-content-item-title" style="text-align:center;">
+                <p class="filter-content-item-title" style="text-align: center">
                   <span>{{ item.ZT }}</span>
                 </p>
                 <p class="filter-content-item-time">
                   <span>{{ item.KSSJ }} 至 {{ item.JSSJ }}</span>
                 </p>
                 <p class="filter-content-item-info">
-                  <span style="font-weight:bold;display:block;">风险内容：</span>
-                  <span v-html="item.SY" style="color:#fff;"></span>
+                  <span style="font-weight: bold; display: block"
+                    >风险内容：</span
+                  >
+                  <span v-html="item.SY" style="color: #fff"></span>
                 </p>
                 <p class="filter-content-item-info">
-                  <span style="font-weight:bold;display:block;">风险分析：</span>
-                  <span v-html="item.FXFX" style="color:#fff;"></span>
+                  <span style="font-weight: bold; display: block"
+                    >风险分析：</span
+                  >
+                  <span v-html="item.FXFX" style="color: #fff"></span>
                 </p>
               </div>
             </div>
@@ -341,19 +526,32 @@
         </div>
       </div>
     </div>
-    <a-modal v-model="overFormVisible" :maskClosable="false" title="关联设备" @ok="handleSaveObj" @cancel="handleCancelObj">
-      <div style="text-align:right;">
+    <a-modal
+      v-model="overFormVisible"
+      :maskClosable="false"
+      title="关联设备"
+      @ok="handleSaveObj"
+      @cancel="handleCancelObj"
+    >
+      <div style="text-align: right">
         <a-button type="primary" @click="handleAddObjList">添加</a-button>
       </div>
-      <a-row style="color:#fff;text-align: center;font-size:16px;">
+      <a-row style="color: #fff; text-align: center; font-size: 16px">
         <a-col :span="8">类型</a-col>
         <a-col :span="12">名称</a-col>
         <a-col :span="4">操作</a-col>
       </a-row>
-      <a-row style="color:#fff;text-align: center;margin-top:10px;" v-for="(item, index) in overFormObjList"
-        :key="index">
+      <a-row
+        style="color: #fff; text-align: center; margin-top: 10px"
+        v-for="(item, index) in overFormObjList"
+        :key="index"
+      >
         <a-col :span="8">
-          <a-select v-model="item.type" @change="handleChangeSubOrLine" style="width: 120px">
+          <a-select
+            v-model="item.type"
+            @change="handleChangeSubOrLine"
+            style="width: 120px"
+          >
             <a-select-option value="SUBSTATION">变电站</a-select-option>
             <a-select-option value="LINE">线路</a-select-option>
             <a-select-option value="TRANSFORMER">主变</a-select-option>
@@ -363,56 +561,90 @@
         </a-col>
         <a-col :span="12">
           <!-- {{ nameList }} -->
-          <a-select v-model="item.name" showSearch :filterOption="false" @search="
-            val => {
-              nameList = $Common.searchfilter(val, 'nameList')
-            }
-          " style="width: 100%">
-            <a-select-option v-for="item in nameList" :key="item.KEY" :value="item.ID">
+          <a-select
+            v-model="item.name"
+            showSearch
+            :filterOption="false"
+            @search="
+              (val) => {
+                nameList = $Common.searchfilter(val, 'nameList')
+              }
+            "
+            style="width: 100%"
+          >
+            <a-select-option
+              v-for="item in nameList"
+              :key="item.KEY"
+              :value="item.ID"
+            >
               {{ item.VALUE }}
             </a-select-option>
           </a-select>
         </a-col>
         <a-col :span="4">
-          <a-button @click="
-            () => {
-              overFormObjList.splice(index, 1)
-            }
-          " type="danger">删除
+          <a-button
+            @click="
+              () => {
+                overFormObjList.splice(index, 1)
+              }
+            "
+            type="danger"
+            >删除
           </a-button>
         </a-col>
       </a-row>
     </a-modal>
 
-    <a-modal v-model="overhaulPlanInfo" :width="900" :maskClosable="false" :title="titleInfo" :footer="null">
-      <a-descriptions :column="2" style="min-height:300px;">
-        <a-descriptions-item v-for="item in planInfoList" :key="item.name" :label="item.name">
+    <a-modal
+      v-model="overhaulPlanInfo"
+      :width="900"
+      :maskClosable="false"
+      :title="titleInfo"
+      :footer="null"
+    >
+      <a-descriptions :column="2" style="min-height: 300px">
+        <a-descriptions-item
+          v-for="item in planInfoList"
+          :key="item.name"
+          :label="item.name"
+        >
           {{ item.value }}
         </a-descriptions-item>
       </a-descriptions>
     </a-modal>
 
-    <a-modal :title="GISTitle" :width="1200" :visible="cellDetailVisible" @cancel="cellDetailVisible = false">
-      <div style="display: flex;">
-        <div style="color: white; width: 50%; height: 600px; padding: 10px" id="echartToolTipGIS">
-
-        </div>
-        <div style="color: white; width: 50%; height: 600px;">
-          <el-image style="width: 100%; height: 100%" :src="s11" :preview-src-list="[s11]">
+    <a-modal
+      :title="GISTitle"
+      :width="1200"
+      :visible="cellDetailVisible"
+      @cancel="cellDetailVisible = false"
+    >
+      <div style="display: flex">
+        <div
+          style="color: white; width: 50%; height: 600px; padding: 10px"
+          id="echartToolTipGIS"
+        ></div>
+        <div style="color: white; width: 50%; height: 600px">
+          <el-image
+            style="width: 100%; height: 100%"
+            :src="s11"
+            :preview-src-list="[s11]"
+          >
           </el-image>
         </div>
       </div>
-      <div class="drawer-footer" style="background-color: #051e2e;">
-        <a-button :style="{ marginRight: '8px' }" @click="cellDetailVisible = false">
+      <div class="drawer-footer" style="background-color: #051e2e">
+        <a-button
+          :style="{ marginRight: '8px' }"
+          @click="cellDetailVisible = false"
+        >
           取消
         </a-button>
       </div>
     </a-modal>
-
   </div>
 </template>
 <script>
-
 const stationPrimitiveList = [
   { name: '500kV变电站', imgName: '500kV' },
   { name: '220kV变电站', imgName: '220kV' },
@@ -452,7 +684,7 @@ const planColumns = []
 export default {
   name: 'Gridsand',
   // components: { ShowGraph },
-  data () {
+  data() {
     return {
       showUnderInfo: '0',
       cellDetailVisible: false,
@@ -711,11 +943,11 @@ export default {
       mountedLineIdArr: [],
       mountedsubData: [],
       mountedLineData: [],
-      s11: '',
+      s11: ''
     }
   },
   watch: {
-    showUnderInfo (to, from) {
+    showUnderInfo(to, from) {
       let _this = this
       _this.$nextTick(() => {
         let dom = document.getElementById('echart-render-box')
@@ -727,7 +959,7 @@ export default {
         }
       })
     },
-    selectStIdArr (val, oldVal) {
+    selectStIdArr(val, oldVal) {
       try {
         if (val.length === 0) {
           // this.showUnderInfo = '0'
@@ -742,23 +974,21 @@ export default {
             for (let i = 0; i < cells.length; i++) {
               if (cells[i].id === id1) {
                 this.$refs.showGraph.siv(id1, cells, name)
-                break;
+                break
               } else if (cells[i].id === id2) {
                 this.$refs.showGraph.siv(id2, cells, name)
-                break;
+                break
               }
             }
           } else {
             for (let i = 0; i < cells.length; i++) {
               if (cells[i].id === id) {
                 this.$refs.showGraph.siv(id, cells, name)
-                break;
+                break
               }
             }
           }
-
         }
-
       } catch (e) {
         console.log(e)
       }
@@ -768,20 +998,23 @@ export default {
       if (val.length) {
         var deleDataItem = null
         if (deleDataID.length) {
-          this.selectedSubArr.forEach(item => {
+          this.selectedSubArr.forEach((item) => {
             if (item.ID == deleDataID[0]) deleDataItem = item
           })
         }
-        this.selectedSubArr = this.selectedSubArr.filter(item => {
+        this.selectedSubArr = this.selectedSubArr.filter((item) => {
           return val.indexOf(item.ID) >= 0
         })
         const OBJIDArr = []
-        this.selectedSubArr.forEach(item => {
+        this.selectedSubArr.forEach((item) => {
           if (item.OBJID && (!item.isTemp || (item.isTemp && item.NUM > 1))) {
             OBJIDArr.push(item.OBJID)
           }
         })
-        if (oldVal.length > val.length && deleDataItem.OBJID == this.overhaulItemObjId) {
+        if (
+          oldVal.length > val.length &&
+          deleDataItem.OBJID == this.overhaulItemObjId
+        ) {
           this.overhaulItemObjId = ''
         }
         this.$set(this, 'overhaulItemObjIdArr', OBJIDArr)
@@ -802,14 +1035,14 @@ export default {
       //   this.overhaulItemObjIdArr
       // )
     },
-    selectedSubArr (val, oldVal) {
+    selectedSubArr(val, oldVal) {
       if (val.length) {
         this.getPtData()
       } else {
         this.overhaulPlanList = []
       }
     },
-    showTypeFlag (to, from) {
+    showTypeFlag(to, from) {
       let _this = this
       // _this.selectStIdArr = []
       if (to === '1') {
@@ -823,9 +1056,8 @@ export default {
         // _this.initJsonGraph({})
       }
     }
-
   },
-  mounted () {
+  mounted() {
     this.initEchart()
     this.initDrag()
     this.getOverhaulForm()
@@ -839,11 +1071,11 @@ export default {
     this.searchSubstion('busline', '')
     this.initJsonGraphInMounted()
   },
-  created () {
+  created() {
     // this.initWebSocket()
   },
 
-  beforeDestroy () {
+  beforeDestroy() {
     // if (this.timeoutObj) {
     //   clearInterval(this.timeoutObj)
     //   this.timeoutObj = null
@@ -857,7 +1089,7 @@ export default {
     //   this.timeoutnum = null
     // }
   },
-  destroyed () {
+  destroyed() {
     // 页面销毁时关闭ws连接
     // if (this.websock) {
     //   this.websock.close() // 关闭websocket
@@ -865,15 +1097,19 @@ export default {
   },
   methods: {
     // 根据厂站id打开指定图片
-    openImgByStid () {
-    },
-    showTypeFlagChange (val) {
+    openImgByStid() {},
+    showTypeFlagChange(val) {
       this.showTypeFlag = val
     },
-    handleSeeInfo (value, type) {
+    handleSeeInfo(value, type) {
       var that = this
       this.overhaulPlanInfo = true
-      this.titleInfo = { n: '年计划详情', zcq: '中长期计划详情', y: '月计划详情', z: '周计划详情' }[type]
+      this.titleInfo = {
+        n: '年计划详情',
+        zcq: '中长期计划详情',
+        y: '月计划详情',
+        z: '周计划详情'
+      }[type]
       that.planInfoList = []
     },
     // 弹框-表格
@@ -902,23 +1138,32 @@ export default {
     //     .catch(err => {
     //     })
     // },
-    fuzzyBycontent () {
+    fuzzyBycontent() {
       if (this.fuzzy.content) {
-        if (this.filterOverFormBySubId.length == 1 && this.filterOverFormBySubId[0] == 'all') {
+        if (
+          this.filterOverFormBySubId.length == 1 &&
+          this.filterOverFormBySubId[0] == 'all'
+        ) {
           this.overhaulForm = this.overhaulFormCopy
-          this.overhaulForm = this.overhaulFormCopy.filter(item => {
+          this.overhaulForm = this.overhaulFormCopy.filter((item) => {
             return item.GZNR.indexOf(this.fuzzy.content) > -1
           })
         } else {
-          this.overhaulForm = this.overhaulFormCopy.filter(item => {
-            return this.filterOverFormBySubId.indexOf(item.STID) > -1 && item.GZNR.indexOf(this.fuzzy.content) > -1
+          this.overhaulForm = this.overhaulFormCopy.filter((item) => {
+            return (
+              this.filterOverFormBySubId.indexOf(item.STID) > -1 &&
+              item.GZNR.indexOf(this.fuzzy.content) > -1
+            )
           })
         }
       } else {
-        if (this.filterOverFormBySubId.length == 1 && this.filterOverFormBySubId[0] == 'all') {
+        if (
+          this.filterOverFormBySubId.length == 1 &&
+          this.filterOverFormBySubId[0] == 'all'
+        ) {
           this.overhaulForm = this.overhaulFormCopy
         } else {
-          this.overhaulForm = this.overhaulFormCopy.filter(item => {
+          this.overhaulForm = this.overhaulFormCopy.filter((item) => {
             return this.filterOverFormBySubId.indexOf(item.STID) > -1
           })
         }
@@ -926,7 +1171,7 @@ export default {
       this.sortOverhaulForm(this.sortName)
     },
     // 点击放大or缩小
-    handleFullscreen () {
+    handleFullscreen() {
       if (this.fullscreenType == 'fullscreen') {
         this.fullscreenType = 'fullscreen-exit'
         // document.getElementById('right-wrap').style.display = 'none'
@@ -942,12 +1187,14 @@ export default {
       }
       this.echartBeforeFail && this.echartBeforeFail.resize()
     },
-    initWebSocket () {
+    initWebSocket() {
       if (typeof WebSocket === 'undefined') {
         alert('您的浏览器不支持WebSocket')
         return false
       }
-      const wsuri = `${process.env.VUE_APP_WEBSOCKET_URL}/websocket?access_token=${12}` // websocket地址
+      const wsuri = `${
+        process.env.VUE_APP_WEBSOCKET_URL
+      }/websocket?access_token=${12}` // websocket地址
       this.websock = new WebSocket(wsuri)
       this.websock.onopen = this.websocketonopen
       this.websock.onmessage = this.websocketonmessage
@@ -955,12 +1202,12 @@ export default {
       this.websock.onclose = this.websocketclose
     },
     // 连接成功
-    websocketonopen () {
+    websocketonopen() {
       console.log('WebSocket连接成功')
       // 开启心跳
       this.start()
     },
-    start () {
+    start() {
       // 开启心跳
       var self = this
       self.timeoutObj && clearTimeout(self.timeoutObj)
@@ -982,7 +1229,7 @@ export default {
         }, self.timeout)
       }, self.timeout)
     },
-    reset () {
+    reset() {
       // 重置心跳
       var that = this
       // 清除时间
@@ -991,7 +1238,7 @@ export default {
       // 重启心跳
       that.start()
     },
-    reconnect () {
+    reconnect() {
       // 重新连接
       var that = this
       console.log('进行重连：' + that.lockReconnect)
@@ -1008,7 +1255,7 @@ export default {
       }, 5000)
     },
     // 接收后端返回的数据
-    websocketonmessage (e) {
+    websocketonmessage(e) {
       console.log(e.data)
       // debugger
       switch (e.data) {
@@ -1022,82 +1269,93 @@ export default {
       }
     },
     // 连接建立失败重连
-    websocketonerror (e) {
+    websocketonerror(e) {
       console.log(`连接失败的信息：`, e)
       this.reconnect() // 连接失败后尝试重新连接
     },
     // 关闭连接
-    websocketclose (e) {
+    websocketclose(e) {
       console.log('断开连接', e)
       if (e.code == 1006) {
         // 重定向到登录页
       }
     },
     // 关闭浮层
-    closeFloat () {
+    closeFloat() {
       const substation = document.getElementById('echart-content-float')
       substation.style.display = 'none'
     },
     // 根据电压等级或者负载率改变值
-    handleChangeRenderMap (val) {
+    handleChangeRenderMap(val) {
       if (this.showTypeFlag === 0 || this.showTypeFlag === '0') {
-        this.$refs.showGraph.dataChange(JSON.stringify(this.graphNodeList), { mountedLineData: this.mountedLineData }, this.renderLineByLoad)
+        this.$refs.showGraph.dataChange(
+          JSON.stringify(this.graphNodeList),
+          { mountedLineData: this.mountedLineData },
+          this.renderLineByLoad
+        )
       } else {
         if (this.echartMapData.lineData) this.renderEcharts(this.echartMapData)
       }
     },
-    handleChangeRenderTy (val) {
+    handleChangeRenderTy(val) {
       this.realTime = false
       // if (this.echartMapData.lineData) this.renderEcharts(this.echartMapData)
     },
     //切换实时刷新或者静止
-    handleChangeRealTime (val) {
+    handleChangeRealTime(val) {
       const that = this
-      if (this.renderTyByTense == 'realTense' && this.realTime && !this.realTimeFlag) {
+      if (
+        this.renderTyByTense == 'realTense' &&
+        this.realTime &&
+        !this.realTimeFlag
+      ) {
         if (that.$route.path == '/automation/scenapp/gridsand') {
-          this.realTimeFlag = true,
-          setTimeout(function () {
-            that.handleChangeRealTime(val)
-          }, 1000 * 60)
+          ;(this.realTimeFlag = true),
+            setTimeout(function () {
+              that.handleChangeRealTime(val)
+            }, 1000 * 60)
         }
       } else {
         this.realTimeFlag = false
       }
     },
     // 根据 变电站、申请时间、申请单位 排序
-    handleSortByName (val) {
+    handleSortByName(val) {
       this.sortOverhaulForm(val)
     },
-    sortOverhaulForm (sortType) {
+    sortOverhaulForm(sortType) {
       this.overhaulForm = []
     },
     // 点击升降-排序
-    handleSort (val) {
+    handleSort(val) {
       this.sortBtn = val
       this.sortOverhaulForm(this.sortName)
     },
-    handleChangeOverTime (val) {
+    handleChangeOverTime(val) {
       this.getOverhaulForm()
       this.getGridRiskForm()
     },
     // 根据变电站筛选检修单
-    handleSubData (val) {
+    handleSubData(val) {
       if (val[val.length - 1] == 'all') {
         this.filterOverFormBySubId = ['all']
         this.overhaulForm = this.overhaulFormCopy
         this.fuzzy.content &&
-          (this.overhaulForm = this.overhaulFormCopy.filter(item => {
+          (this.overhaulForm = this.overhaulFormCopy.filter((item) => {
             return item.GZNR.indexOf(this.fuzzy.content) > -1
           }))
       } else {
         const index = this.filterOverFormBySubId.indexOf('all')
         if (index > -1) this.filterOverFormBySubId.splice(index, 1)
         if (this.fuzzy.content) {
-          this.overhaulForm = this.overhaulFormCopy.filter(item => {
-            return this.filterOverFormBySubId.indexOf(item.STID) > -1 && item.GZNR.indexOf(this.fuzzy.content) > -1
+          this.overhaulForm = this.overhaulFormCopy.filter((item) => {
+            return (
+              this.filterOverFormBySubId.indexOf(item.STID) > -1 &&
+              item.GZNR.indexOf(this.fuzzy.content) > -1
+            )
           })
         } else {
-          this.overhaulForm = this.overhaulFormCopy.filter(item => {
+          this.overhaulForm = this.overhaulFormCopy.filter((item) => {
             return this.filterOverFormBySubId.indexOf(item.STID) > -1
           })
         }
@@ -1105,29 +1363,33 @@ export default {
       this.sortOverhaulForm(this.sortName)
     },
     // 获取检修申请单
-    getOverhaulForm () {
+    getOverhaulForm() {
       const param = {
         start: this.selectRangeTime ? this.selectRangeTime[0] : '',
         end: this.selectRangeTime ? this.selectRangeTime[1] : ''
       }
     },
     // 编辑检修单
-    handleEditOverForm (item) {
+    handleEditOverForm(item) {
       this.overFormVisible = true
       this.overFormObjId = item.OBJID
       // this.$set(this, 'overFormObjList', [{ type: item.S_TYPE, name: item.S_ID + '' }])
       // this.overFormObjList = [{ type: item.S_TYPE, name: item.S_ID + '' }]
     },
-    handleCancelObj () {
+    handleCancelObj() {
       this.overFormVisible = false
       this.nameList = []
       this.overFormObjList = []
     },
     // 保存
-    handleSaveObj () {
+    handleSaveObj() {
       var _sIds = ''
       var _sTypes = ''
-      if (this.overFormObjList.length > 0 && this.overFormObjList[0].type && this.overFormObjList[0].name) {
+      if (
+        this.overFormObjList.length > 0 &&
+        this.overFormObjList[0].type &&
+        this.overFormObjList[0].name
+      ) {
         this.overFormObjList.forEach((item, index) => {
           if (this.overFormObjList.length - 1 > index) {
             _sIds = _sIds + item.name + ','
@@ -1142,7 +1404,7 @@ export default {
       }
     },
     // 添加设备
-    handleAddObjList () {
+    handleAddObjList() {
       const obj = {
         type: '',
         name: ''
@@ -1150,13 +1412,13 @@ export default {
       this.overFormObjList.push(obj)
     },
     // 选中检修单
-    handleSelectOverhaulForm (item) {
+    handleSelectOverhaulForm(item) {
       // 选中之后--判断stid and sid 有值：对该条数据进行操作 无值 返回
       if (item.S_ID && item.STID) {
         this.selectDataOption(item)
       }
     },
-    selectDataOption (item) {
+    selectDataOption(item) {
       // debugger
       // 选中之后--样式切换
       const objArr = this.overhaulItemObjIdArr
@@ -1168,7 +1430,7 @@ export default {
         objArr.splice(_index, 1)
         this.$set(this, 'overhaulItemObjIdArr', objArr)
         if (_stidIndex >= 0) {
-          this.selectedSubArr.forEach(el => {
+          this.selectedSubArr.forEach((el) => {
             if (el.ID == _stID) {
               if (el.NUM == 1) {
                 this.selectStIdArr.splice(_stidIndex, 1)
@@ -1176,31 +1438,35 @@ export default {
               el.NUM--
             }
           })
-          this.overhaulItemObjS_idArr.forEach(el => {
+          this.overhaulItemObjS_idArr.forEach((el) => {
             if (el.ID == _stID) el.NUM--
           })
 
-          this.selectedSubArr = this.selectedSubArr.filter(el => {
+          this.selectedSubArr = this.selectedSubArr.filter((el) => {
             return el.NUM > 0
           })
-          this.overhaulItemObjS_idArr = this.overhaulItemObjS_idArr.filter(el => {
-            return el.NUM > 0
-          })
+          this.overhaulItemObjS_idArr = this.overhaulItemObjS_idArr.filter(
+            (el) => {
+              return el.NUM > 0
+            }
+          )
         }
       } else {
         // 选中元素
         objArr.push(item.OBJID)
         this.$set(this, 'overhaulItemObjIdArr', objArr)
         if (_stidIndex >= 0) {
-          this.selectedSubArr.forEach(element => {
+          this.selectedSubArr.forEach((element) => {
             if (element.ID == _stID && element.type == 'jx') element.NUM++
             if (element.ID == _stID && element.type == 'ty') {
               element.type = 'jx'
               element.NUM = 1
-              this.overhaulItemObjS_idArr.push(JSON.parse(JSON.stringify(element)))
+              this.overhaulItemObjS_idArr.push(
+                JSON.parse(JSON.stringify(element))
+              )
             }
           })
-          this.overhaulItemObjS_idArr.forEach(element => {
+          this.overhaulItemObjS_idArr.forEach((element) => {
             if (element.ID == _stID) element.NUM++
           })
         } else {
@@ -1208,7 +1474,10 @@ export default {
           var _stHaveIndex = -1
           var _stHaveItem = null
           this.selectedSubArr.forEach((el, index) => {
-            if (el.VALUE.split('变')[0] == item.TYDW.split('变')[0] && el.type == 'ty') {
+            if (
+              el.VALUE.split('变')[0] == item.TYDW.split('变')[0] &&
+              el.type == 'ty'
+            ) {
               _stHaveName = true
               _stHaveItem = el
               _stHaveIndex = index
@@ -1216,7 +1485,10 @@ export default {
           })
           if (_stHaveName) {
             this.selectedSubArr.splice(_stHaveIndex, 1)
-            this.selectStIdArr.splice(this.selectStIdArr.indexOf(_stHaveItem.ID), 1)
+            this.selectStIdArr.splice(
+              this.selectStIdArr.indexOf(_stHaveItem.ID),
+              1
+            )
           }
           const _obj = {
             OBJID: item.OBJID,
@@ -1235,10 +1507,15 @@ export default {
           this.overhaulItemObjS_idArr.push(JSON.parse(JSON.stringify(_obj)))
         }
       }
-      console.log('3333333333333选中检修单---', this.selectedSubArr, this.selectStIdArr, this.overhaulItemObjS_idArr)
+      console.log(
+        '3333333333333选中检修单---',
+        this.selectedSubArr,
+        this.selectStIdArr,
+        this.overhaulItemObjS_idArr
+      )
     },
     // 获取电网风险单
-    getGridRiskForm () {
+    getGridRiskForm() {
       const param = {
         start: this.selectRangeTime ? this.selectRangeTime[0] : '',
         end: this.selectRangeTime ? this.selectRangeTime[1] : '',
@@ -1247,15 +1524,14 @@ export default {
       }
     },
     // 获取风险定级
-    getGridRiskLevel (OBJID) {
-    },
-    riskLevelColor (riskLevel) {
+    getGridRiskLevel(OBJID) {},
+    riskLevelColor(riskLevel) {
       if (riskLevel < 5) return '#e86353'
       if (riskLevel < 6) return '#f6bd15'
       if (riskLevel < 7) return '#5bd8a6'
     },
     // 点击电网风险--目前先不支持点击操作
-    handleGridRiskForm (item) {
+    handleGridRiskForm(item) {
       this.gridRiskItemObjId = item.OBJID
       this.gridRiskItemId = item.STID
       // if (item.STID != null) {
@@ -1268,11 +1544,10 @@ export default {
       // }
     },
     // 获取变电站/线路下拉框
-    searchSubstion (type, voltage) {
+    searchSubstion(type, voltage) {
       const _typeName = type + 'List'
-    
     },
-    handleChangeSubOrLine (val) {
+    handleChangeSubOrLine(val) {
       if (val === 'SUBSTATION') {
         this.nameList = JSON.parse(JSON.stringify(this.plantList))
       } else if (val === 'LINE') {
@@ -1286,7 +1561,7 @@ export default {
       }
       this.$Common.getSubData('nameList', this.nameList)
     },
-    initEchart () {
+    initEchart() {
       var that = this
       this.echartBeforeFail.setOption(this.beforeOption)
       // this.echartHistoryLine = this.$echarts.init(document.getElementById('echartHistoryLine'))
@@ -1294,14 +1569,19 @@ export default {
       this.echartBeforeFail.on('click', function (param) {
         if (param.componentSubType && param.componentSubType === 'scatter') {
           that.isHideEchartLine = false
-          const clickItem = that.echartMapData.subData.filter(item => {
+          const clickItem = that.echartMapData.subData.filter((item) => {
             return item.properties.stid === param.seriesId
           })
-          document.getElementById('toolTip').style.left = param.event.offsetX - 200 + 'px'
-          document.getElementById('toolTip').style.top = param.event.offsetY + 'px'
+          document.getElementById('toolTip').style.left =
+            param.event.offsetX - 200 + 'px'
+          document.getElementById('toolTip').style.top =
+            param.event.offsetY + 'px'
           document.getElementById('toolTip').style.display = 'block'
           that.renderEchartToolTip(clickItem, 'echartToolTip')
-        } else if (param.componentSubType && param.componentSubType === 'lines') {
+        } else if (
+          param.componentSubType &&
+          param.componentSubType === 'lines'
+        ) {
           // debugger
           that.isHideEchartLine = true
           that.hideTootip()
@@ -1316,18 +1596,23 @@ export default {
       })
     },
     // 弹窗 + 曲线 + 下属接线图
-    initEchartDetail (param, type) {
+    initEchartDetail(param, type) {
       try {
         this.GISTitle = '曲线分析图'
         this.initEchartDetailCell = param.cell
         if (type === 'scatter') {
           for (let i = 0; i < this.mountedsubData.length; i++) {
-            if (this.mountedsubData[i].properties.stid === this.initEchartDetailCell.id) {
-              this.GISTitle = this.mountedsubData[i].properties.dydj + this.mountedsubData[i].properties.name
+            if (
+              this.mountedsubData[i].properties.stid ===
+              this.initEchartDetailCell.id
+            ) {
+              this.GISTitle =
+                this.mountedsubData[i].properties.dydj +
+                this.mountedsubData[i].properties.name
             }
             // console.log(this.echartMapData.subData[i].properties.stid + ' - ' + this.initEchartDetailCell.id)
           }
-          const clickItem = this.mountedsubData.filter(item => {
+          const clickItem = this.mountedsubData.filter((item) => {
             return item.properties.stid === this.initEchartDetailCell.id
           })
           if (clickItem.length > 0) {
@@ -1346,33 +1631,31 @@ export default {
         console.log(e)
       }
     },
-    hideTootip () {
+    hideTootip() {
       this.tooltipInfoList = null
       document.getElementById('toolTip').style.left = 0
       document.getElementById('toolTip').style.top = 0
       document.getElementById('toolTip').style.display = 'none'
     },
     // 切换层级
-    handleChange () {
-    },
+    handleChange() {},
     // 变电站时间改变
-    handleSubTime (val) {
-
+    handleSubTime(val) {
       this.initJsonGraphInMounted()
     },
     // 选择变电站-渲染图层
-    handleSubstationChange (val) {
+    handleSubstationChange(val) {
       this.stId = ''
       const substation = document.getElementById('echart-content-float')
       substation.style.display = 'none'
       if (val) {
-        this.stSelectData.forEach(item => {
+        this.stSelectData.forEach((item) => {
           if (item.ID == val) {
             this.subId = item.KEY
             const _stID = item.KEY + '/' + item.VALUE
             if (this.selectStIdArr.indexOf(_stID) < 0) {
               var _stHaveName = false
-              this.selectedSubArr.forEach(el => {
+              this.selectedSubArr.forEach((el) => {
                 if (el.VALUE.split('变')[0] == item.VALUE.split('变')[0]) {
                   _stHaveName = true
                 }
@@ -1394,15 +1677,16 @@ export default {
             }
             // 检修单中的变电站筛选
             let isHaveSelectSub = false
-            this.selectSubstation.forEach(el => {
-              if (el.VALUE.split('变')[0] == item.VALUE.split('变')[0]) isHaveSelectSub = true
+            this.selectSubstation.forEach((el) => {
+              if (el.VALUE.split('变')[0] == item.VALUE.split('变')[0])
+                isHaveSelectSub = true
             })
             if (!isHaveSelectSub) {
               const index = this.filterOverFormBySubId.indexOf('all')
               if (index > -1) this.filterOverFormBySubId.splice(index, 1)
               this.filterOverFormBySubId.push(item.ID)
               this.selectSubstation.push(item)
-              this.overhaulForm = this.overhaulFormCopy.filter(item => {
+              this.overhaulForm = this.overhaulFormCopy.filter((item) => {
                 return this.filterOverFormBySubId.indexOf(item.STID) > -1
               })
             }
@@ -1417,14 +1701,14 @@ export default {
       }
     },
     // 主变按钮切换
-    handleChangeSub (item) {
+    handleChangeSub(item) {
       this.showPt = false
       this.subType = item.TR_ID
       this.getSubInfoItem(item)
       this.getLoadRateLineData(item.TR_ID)
     },
     // 获取台账信息
-    getSubInfoItem (item) {
+    getSubInfoItem(item) {
       var array = []
       for (const key in item) {
         const obj = {
@@ -1436,7 +1720,7 @@ export default {
       this.$set(this, 'subInfoItem', array)
     },
     // 点击主变获取负载率曲线信息
-    getLoadRateLineData (TR_ID) {
+    getLoadRateLineData(TR_ID) {
       this.showUnderInfo = '1'
       const param = {
         id: TR_ID,
@@ -1444,7 +1728,7 @@ export default {
       }
       this.echartLineLoad = true
     },
-    getLoadRateLineDataByLines (TR_ID) {
+    getLoadRateLineDataByLines(TR_ID) {
       this.showUnderInfo = '1'
       const param = {
         id: TR_ID,
@@ -1453,7 +1737,7 @@ export default {
       this.echartLineLoad = true
     },
     // 获取厂站echarts数据
-    getEchartsData () {
+    getEchartsData() {
       var _stId = ''
       var _type = ''
       var _sId = ''
@@ -1486,7 +1770,7 @@ export default {
             sType: _sType,
             occur_time: this.selectTime,
             level: this.stHierarchy
-          }).then(res => {
+          }).then((res) => {
             if (res) {
               this.echartMapData = res
               this.echartMapLoad = false
@@ -1497,7 +1781,9 @@ export default {
           })
         } else {
           const _ids = this.overhaulItemObjId
-            ? this.overhaulItemObjIdArr.toString() + ',' + this.overhaulItemObjId
+            ? this.overhaulItemObjIdArr.toString() +
+              ',' +
+              this.overhaulItemObjId
             : this.overhaulItemObjIdArr.toString()
         }
       } else {
@@ -1508,11 +1794,14 @@ export default {
           sId: _sId,
           sType: _sType,
           occur_time: this.selectTime,
-          level: this.stHierarchy,
+          level: this.stHierarchy
         }
         if (this.renderTyByTense !== 'realTense') {
-          params.ids = this.overhaulItemObjId ?
-            this.overhaulItemObjIdArr.toString() + ',' + this.overhaulItemObjId : this.overhaulItemObjIdArr.toString()
+          params.ids = this.overhaulItemObjId
+            ? this.overhaulItemObjIdArr.toString() +
+              ',' +
+              this.overhaulItemObjId
+            : this.overhaulItemObjIdArr.toString()
         }
         if (this.renderTyByTense === 'realTense') {
           this.getEchartsData({
@@ -1522,7 +1811,7 @@ export default {
             sType: _sType,
             occur_time: this.selectTime,
             level: this.stHierarchy
-          }).then(res => {
+          }).then((res) => {
             if (res) {
               this.echartMapData = res
               this.goToGIS(params, res)
@@ -1531,7 +1820,9 @@ export default {
           })
         } else {
           const _ids = this.overhaulItemObjId
-            ? this.overhaulItemObjIdArr.toString() + ',' + this.overhaulItemObjId
+            ? this.overhaulItemObjIdArr.toString() +
+              ',' +
+              this.overhaulItemObjId
             : this.overhaulItemObjIdArr.toString()
           this.getEchartsData({
             st_id: _stId,
@@ -1541,7 +1832,7 @@ export default {
             occur_time: this.selectTime,
             level: this.stHierarchy,
             ids: _ids
-          }).then(res => {
+          }).then((res) => {
             if (res) {
               this.echartMapData = res
               this.goToGIS(params, res)
@@ -1549,10 +1840,9 @@ export default {
             this.echartMapLoad = false
           })
         }
-
       }
     },
-    goToGIS (params, echartMapData) {
+    goToGIS(params, echartMapData) {
       let _this = this
       // 通过选中的检修单查询配停表
       if (this.overhaulItemObjS_idArr.length > 0) {
@@ -1563,27 +1853,28 @@ export default {
       }
       this.initJsonGraph(params, echartMapData)
     },
-    initJsonGraphInMounted () {
-    },
-    initJsonGraph (params, echartMapData) {
+    initJsonGraphInMounted() {},
+    initJsonGraph(params, echartMapData) {
       // 带参数读取全网拓扑接口
     },
-    rebuildEcharts (data) {
+    rebuildEcharts(data) {
       this.echartMapData = data
       this.renderEcharts(data)
     },
-    renderLineData (data) {
+    renderLineData(data) {
       const option = this.echartHistoryLine.getOption()
       option.xAxis[0].data = data.xAxis || []
-      if (data.preGraph && data.preGraph.length > 0) option.series[0].data = this.dataHandle(data.preGraph)
+      if (data.preGraph && data.preGraph.length > 0)
+        option.series[0].data = this.dataHandle(data.preGraph)
       else option.series[0].data = []
-      if (data.curGraph && data.curGraph.length > 0) option.series[1].data = this.dataHandle(data.curGraph)
+      if (data.curGraph && data.curGraph.length > 0)
+        option.series[1].data = this.dataHandle(data.curGraph)
       else option.series[1].data = []
       this.echartHistoryLine && this.echartHistoryLine.clear()
       this.echartHistoryLine.setOption(option)
     },
     //生成tooltip里的柱状图
-    renderEchartToolTip (data, className) {
+    renderEchartToolTip(data, className) {
       var that = this
       const name = []
       const valueLoad = []
@@ -1591,7 +1882,7 @@ export default {
       const valueRemain = []
       if (data !== null && data.length > 0) {
         that.stname = data[0].properties.name
-        data[0].transformers.forEach(item => {
+        data[0].transformers.forEach((item) => {
           name.push(item.trName.split('/')[1])
           valueLoad.push(item.load)
           // valueLoad.push(1073)
@@ -1610,7 +1901,12 @@ export default {
           const c1 = [shape.x - 9, shape.y - 9]
           const c2 = [xAxisPoint[0] - 9, xAxisPoint[1] - 9]
           const c3 = [xAxisPoint[0], xAxisPoint[1]]
-          ctx.moveTo(c0[0], c0[1]).lineTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).closePath()
+          ctx
+            .moveTo(c0[0], c0[1])
+            .lineTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .closePath()
         }
       })
       const CubeRight = that.$echarts.graphic.extendShape({
@@ -1624,7 +1920,12 @@ export default {
           const c2 = [xAxisPoint[0], xAxisPoint[1]]
           const c3 = [xAxisPoint[0] + 18, xAxisPoint[1] - 9]
           const c4 = [shape.x + 18, shape.y - 9]
-          ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath()
+          ctx
+            .moveTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .lineTo(c4[0], c4[1])
+            .closePath()
         }
       })
       const CubeTop = that.$echarts.graphic.extendShape({
@@ -1637,7 +1938,12 @@ export default {
           const c2 = [shape.x + 18, shape.y - 9]
           const c3 = [shape.x + 9, shape.y - 18]
           const c4 = [shape.x - 9, shape.y - 9]
-          ctx.moveTo(c1[0], c1[1]).lineTo(c2[0], c2[1]).lineTo(c3[0], c3[1]).lineTo(c4[0], c4[1]).closePath()
+          ctx
+            .moveTo(c1[0], c1[1])
+            .lineTo(c2[0], c2[1])
+            .lineTo(c3[0], c3[1])
+            .lineTo(c4[0], c4[1])
+            .closePath()
         }
       })
       that.$echarts.graphic.registerShape('CubeLeft', CubeLeft)
@@ -1657,23 +1963,38 @@ export default {
           formatter: function (params, valueLoadRate) {
             // console.log(params, 'params')
             let returnData = ''
-            let indexColor = '#da953e', indexColor2 = '#ff0000', indexColor3 = '#ff0000'
-            returnData += '<div style="line-height:12px;text-align:center"><span style="font-size:12px;">' + params[0].name + '</span><br/>'
+            let indexColor = '#da953e',
+              indexColor2 = '#ff0000',
+              indexColor3 = '#ff0000'
+            returnData +=
+              '<div style="line-height:12px;text-align:center"><span style="font-size:12px;">' +
+              params[0].name +
+              '</span><br/>'
             returnData +=
               '<span style="display:inline-block;margin-right:-10px;border-radius:10px;width:9px;height:9px;background:' +
               indexColor +
               '"></span>'
-            returnData += '<span style="padding-left:13px;font-size:12px">额定功率：' + params[0].value + '</span>'
+            returnData +=
+              '<span style="padding-left:13px;font-size:12px">额定功率：' +
+              params[0].value +
+              '</span>'
             returnData +=
               '<br/><span style="display:inline-block;margin-right:-10px;border-radius:10px;width:9px;height:9px;background:' +
               indexColor2 +
               '"></span>'
-            returnData += '<span style="padding-left:13px;font-size:12px">视在功率' + params[1].value + '</span>'
+            returnData +=
+              '<span style="padding-left:13px;font-size:12px">视在功率' +
+              params[1].value +
+              '</span>'
             returnData +=
               '<br/><span style="display:inline-block;margin-right:-10px;border-radius:10px;width:9px;height:9px;background:' +
               indexColor3 +
               '"></span>'
-            returnData += '<span style="padding-left:13px;font-size:12px">负载率：' + parseFloat(params[1].value / params[0].value * 100).toFixed(2) + '%' + '</span></div>'
+            returnData +=
+              '<span style="padding-left:13px;font-size:12px">负载率：' +
+              parseFloat((params[1].value / params[0].value) * 100).toFixed(2) +
+              '%' +
+              '</span></div>'
 
             return returnData
           },
@@ -1754,16 +2075,22 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: 'rgba(60,135,226,0.1)'
-                        },
-                        {
-                          offset: 1,
-                          color: 'rgba(70,176,229,0.1)'
-                        }
-                      ])
+                      fill: new that.$echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: 'rgba(60,135,226,0.1)'
+                          },
+                          {
+                            offset: 1,
+                            color: 'rgba(70,176,229,0.1)'
+                          }
+                        ]
+                      )
                     }
                   },
                   {
@@ -1777,16 +2104,22 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: 'rgba(60,135,226,0.2)'
-                        },
-                        {
-                          offset: 1,
-                          color: 'rgba(70,176,229,0.1)'
-                        }
-                      ])
+                      fill: new that.$echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: 'rgba(60,135,226,0.2)'
+                          },
+                          {
+                            offset: 1,
+                            color: 'rgba(70,176,229,0.1)'
+                          }
+                        ]
+                      )
                     }
                   },
                   {
@@ -1800,16 +2133,22 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: 'rgba(60,135,226,0.2)'
-                        },
-                        {
-                          offset: 1,
-                          color: 'rgba(70,176,229,0.2)'
-                        }
-                      ])
+                      fill: new that.$echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: 'rgba(60,135,226,0.2)'
+                          },
+                          {
+                            offset: 1,
+                            color: 'rgba(70,176,229,0.2)'
+                          }
+                        ]
+                      )
                     }
                   }
                 ]
@@ -1835,16 +2174,22 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: '#da953e'
-                        },
-                        {
-                          offset: 1,
-                          color: '#ff0000'
-                        }
-                      ])
+                      fill: new that.$echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: '#da953e'
+                          },
+                          {
+                            offset: 1,
+                            color: '#ff0000'
+                          }
+                        ]
+                      )
                     }
                   },
                   {
@@ -1858,16 +2203,22 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: '#da953e'
-                        },
-                        {
-                          offset: 1,
-                          color: '#ff0000'
-                        }
-                      ])
+                      fill: new that.$echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: '#da953e'
+                          },
+                          {
+                            offset: 1,
+                            color: '#ff0000'
+                          }
+                        ]
+                      )
                     }
                   },
                   {
@@ -1881,16 +2232,22 @@ export default {
                       xAxisPoint: api.coord([api.value(0), 0])
                     },
                     style: {
-                      fill: new that.$echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                        {
-                          offset: 0,
-                          color: '#da953e'
-                        },
-                        {
-                          offset: 1,
-                          color: '#ff0000'
-                        }
-                      ])
+                      fill: new that.$echarts.graphic.LinearGradient(
+                        0,
+                        0,
+                        0,
+                        1,
+                        [
+                          {
+                            offset: 0,
+                            color: '#da953e'
+                          },
+                          {
+                            offset: 1,
+                            color: '#ff0000'
+                          }
+                        ]
+                      )
                     }
                   }
                 ]
@@ -1909,16 +2266,17 @@ export default {
         ]
       }
       that.$nextTick(() => {
-        that.tooltipInfoList = that.$echarts.init(document.getElementById(className))
+        that.tooltipInfoList = that.$echarts.init(
+          document.getElementById(className)
+        )
         that.tooltipInfoList.setOption(option)
       })
-
     },
     // 对返回的数据格式进行处理
-    dataHandle (data) {
+    dataHandle(data) {
       const array = []
       var _boolen = false
-      data.forEach(element => {
+      data.forEach((element) => {
         if (element == null || element == '') array.push(null)
         else {
           _boolen = true
@@ -1928,7 +2286,7 @@ export default {
       return _boolen ? array : []
       // return array
     },
-    renderEcharts (echartData) {
+    renderEcharts(echartData) {
       const that = this
       const option = that.echartBeforeFail.getOption()
       // that.echartBeforeFail.clear();
@@ -1954,7 +2312,6 @@ export default {
       if (_subData && _subData.length > 0) {
         centerCoord = _subData[0].geometry.coordinates
         _subData.forEach((item, i) => {
-
           if (item.properties.stid == that.subId) {
             centerCoord = item.geometry.coordinates
           }
@@ -2037,18 +2394,22 @@ export default {
         _lineData.forEach((item, index) => {
           if (item.properties.ycToQC.indexOf('-') != -1) {
             // 带负号
-            coordsQC = [item.geometry.coordinates[1], item.geometry.coordinates[0]]
+            coordsQC = [
+              item.geometry.coordinates[1],
+              item.geometry.coordinates[0]
+            ]
           } else {
-            coordsQC = [item.geometry.coordinates[0], item.geometry.coordinates[1]]
+            coordsQC = [
+              item.geometry.coordinates[0],
+              item.geometry.coordinates[1]
+            ]
           }
           // icon
 
           if (item.properties.icon == 'fx') {
-            iconSrc = {
-            }
+            iconSrc = {}
           } else if (item.properties.icon == 'jx') {
-            iconSrc = {
-            }
+            iconSrc = {}
           } else {
             iconSrc = 'transparent'
           }
@@ -2073,7 +2434,9 @@ export default {
               color: '#fff',
               position: 'middle',
               formatter: function (params) {
-                return ` ${item.properties.ycLineQC + '\n' + item.properties.name} {a|}` // 地图上展示文字 + 数值,
+                return ` ${
+                  item.properties.ycLineQC + '\n' + item.properties.name
+                } {a|}` // 地图上展示文字 + 数值,
               },
               rich: {
                 a: {
@@ -2145,13 +2508,13 @@ export default {
       that.echartBeforeFail.setOption(option)
     },
     // 元素-拷贝拖拽
-    initDrag () {
+    initDrag() {
       this.stationPrimitiveList.forEach((item, index) => {
         const _id = 'substaion_' + item.imgName
         this.cloneMove(document.getElementById(_id), index)
       })
     },
-    cloneMove (cloneMoves, index) {
+    cloneMove(cloneMoves, index) {
       var that = this
       var disX = 0
       var disY = 0
@@ -2164,7 +2527,8 @@ export default {
           var isMove = false
           document.onmousemove = function (event) {
             var substation = document.getElementById('select_subtion')
-            document.getElementById('echart-content-float').style.display = 'block'
+            document.getElementById('echart-content-float').style.display =
+              'block'
             var cloneTempSrc = cloneTemp.getAttribute('src')
             var src = ''
             if (cloneTempSrc.includes('active')) src = cloneTempSrc
@@ -2182,8 +2546,10 @@ export default {
             document.onmousemove = null
             document.onmouseup = null
             var substation = document.getElementById('select_subtion')
-            var height = document.getElementById('echart-content-float').clientHeight - 130
-            var width = document.getElementById('echart-content-float').clientWidth - 240
+            var height =
+              document.getElementById('echart-content-float').clientHeight - 130
+            var width =
+              document.getElementById('echart-content-float').clientWidth - 240
             var iL = event.clientX - 167 - 120
             var iT = event.clientY - 164 - 32
             if (isMove) {
@@ -2252,8 +2618,8 @@ export default {
       }
     },
     //获取陪停设备
-    getPtData () {
-      var _objId = '';
+    getPtData() {
+      var _objId = ''
       // debugger
       this.selectedSubArr.forEach((item, index) => {
         if (this.selectedSubArr.length - 1 > index) {
@@ -2377,7 +2743,11 @@ export default {
         width: 100%;
         line-height: 40px;
         // background: linear-gradient(to right, #1f7fb8, #021124);
-        background: linear-gradient(221deg, rgba(16, 27, 68, 0) 0%, #207fb8 100%);
+        background: linear-gradient(
+          221deg,
+          rgba(16, 27, 68, 0) 0%,
+          #207fb8 100%
+        );
         padding-left: 10px;
       }
     }
@@ -2390,7 +2760,6 @@ export default {
 
   .filter-box,
   .fuzzy-content {
-
     .filter-item,
     .fuzzy-item {
       display: inline-block;
@@ -2404,7 +2773,6 @@ export default {
     }
 
     .btn-box {
-
       // float: right;
       span {
         width: 25px;
@@ -2758,7 +3126,14 @@ export default {
         background: #0095ff;
         border: 1px solid #0095ff;
         margin: 0 5px;
-        clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+        clip-path: polygon(
+          0 0,
+          calc(100% - 10px) 0,
+          100% 10px,
+          100% 100%,
+          10px 100%,
+          0 calc(100% - 10px)
+        );
         cursor: pointer;
 
         span {
@@ -2767,7 +3142,14 @@ export default {
           height: 28px;
           line-height: 28px;
           background: #024d88;
-          clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+          clip-path: polygon(
+            0 0,
+            calc(100% - 10px) 0,
+            100% 10px,
+            100% 100%,
+            10px 100%,
+            0 calc(100% - 10px)
+          );
         }
 
         &.active {
@@ -2879,9 +3261,24 @@ export default {
         border-radius: 4px;
         border-width: 1px;
         border-style: solid;
-        border-image: -webkit-linear-gradient(rgba(160, 195, 215, 1), rgba(160, 196, 216, 0), rgba(160, 195, 215, 1)) 30 30;
-        border-image: -moz-linear-gradient(rgba(160, 195, 215, 1), rgba(160, 196, 216, 0), rgba(160, 195, 215, 1)) 30 30;
-        border-image: linear-gradient(rgba(160, 195, 215, 1), rgba(160, 196, 216, 0), rgba(160, 195, 215, 1)) 30 30;
+        border-image: -webkit-linear-gradient(
+            rgba(160, 195, 215, 1),
+            rgba(160, 196, 216, 0),
+            rgba(160, 195, 215, 1)
+          )
+          30 30;
+        border-image: -moz-linear-gradient(
+            rgba(160, 195, 215, 1),
+            rgba(160, 196, 216, 0),
+            rgba(160, 195, 215, 1)
+          )
+          30 30;
+        border-image: linear-gradient(
+            rgba(160, 195, 215, 1),
+            rgba(160, 196, 216, 0),
+            rgba(160, 195, 215, 1)
+          )
+          30 30;
         display: flex;
 
         .info-wrap,
@@ -2898,31 +3295,31 @@ export default {
 }
 </style>
 <style lang="scss" scoped>
- .ant-descriptions {
+.ant-descriptions {
   height: 100%;
   font-size: 18px;
   overflow: auto;
 }
 
- .ant-descriptions-item-label {
+.ant-descriptions-item-label {
   color: #5cbcff;
 }
 
- .ant-descriptions-item-content {
+.ant-descriptions-item-content {
   color: #fff;
 }
 
- .ant-descriptions-row>th,
- .ant-descriptions-row>td {
+.ant-descriptions-row > th,
+.ant-descriptions-row > td {
   padding-bottom: 0;
   vertical-align: top;
 }
 
- .ant-radio-group {
+.ant-radio-group {
   margin-top: 5px;
 }
 
- .ant-radio-button-wrapper {
+.ant-radio-button-wrapper {
   background-size: 100% 100%;
   border: none;
   color: #fff;
@@ -2936,7 +3333,7 @@ export default {
   }
 }
 
- .ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
+.ant-radio-button-wrapper-checked:not(.ant-radio-button-wrapper-disabled) {
   background-size: 100% 100%;
   color: #f7e400;
   box-shadow: none;
@@ -2946,14 +3343,14 @@ export default {
   }
 }
 
- .ant-table-thead>tr>th,
- .ant-table-tbody>tr>td {
+.ant-table-thead > tr > th,
+.ant-table-tbody > tr > td {
   padding: 3px;
 }
- .ant-table-placeholder {
+.ant-table-placeholder {
   background: #fff0;
 }
- .ant-empty-description {
+.ant-empty-description {
   color: #fff;
 }
 #showView {
