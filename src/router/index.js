@@ -25,6 +25,11 @@ const routes = [
         component: () => import('@/views/viewport1')
       }
     ]
+  },
+  {
+    path: '/other',
+    name: 'other',
+    component: () => import('../views/OtherView.vue')
   }
 ]
 

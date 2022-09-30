@@ -1,14 +1,13 @@
 <template>
   <div class="collapse">
-    <div class="content" ref="content" :class="isCollapse ? 'shrink' : 'large'">
-      <slot></slot>
+    <div class="items_content" ref="content">
+      <div class="content" :class="isCollapse ? 'shrink' : 'large'">
+        <el-button v-for="i in 32" :key="i">者重中之重{{i}}</el-button>
+        <slot></slot>
+      </div>
     </div>
-    <el-button
-      class="button"
-      type="primary"
-      @click="onToggleCollapse"
-      :icon="isCollapse ? 'el-icon-arrow-down' : 'el-icon-arrow-up'"
-    >
+    <el-button class="button" type="primary" @click="onToggleCollapse"
+      :icon="isCollapse ? 'el-icon-arrow-down' : 'el-icon-arrow-up'">
     </el-button>
   </div>
 </template>
@@ -30,6 +29,12 @@ export default {
   methods: {
     onToggleCollapse() {
       this.isCollapse = !this.isCollapse
+      // overflow hidden
+      if (this.isCollapse) {
+        this.$refs['content'].style.overflow = 'hidden'
+      } else {
+        this.$refs['content'].style.overflow = 'initial'
+      }
       // if (this.isCollapse) {
       //   this.$refs['content'].style.height = '40px'
       // } else {
@@ -46,36 +51,39 @@ export default {
   display: flex;
   width: 100%;
 
-  .content {
+  .items_content {
     flex: 1 1;
+    height: 40px;
     display: flex;
     flex-flow: row wrap;
-    background-color: pink;
-    border-radius: 4px;
-    justify-content: flex-end;
-    // align-content: flex-start;
+    align-content: flex-start;
     align-items: flex-start;
-    transition: 0.5s ease-in-out;
     overflow: hidden;
-    > button {
+
+    >button {
       margin: 2px;
     }
-    &.shrink {
-      height: 44px;
-    }
 
-    &.large {
-      height: 360px;
-      // transform: scale(1, 6);
-      // transform: scale(1, 60px);
-      // transform-origin: top;
+    .content {
+      width: 100%;
+      transition: 0.5s ease-in-out;
+      // background-color: magenta;
+      border-radius: 4px;
+
+      &.shrink {
+        height: 120px;
+      }
+
+      &.large {
+        height: 360px;
+      }
     }
   }
 
-  .button {
+  button {
     margin: 2px;
     flex: 0 0 80px;
-    height: 40px;
+    // height: 40px;
   }
 }
 </style>
